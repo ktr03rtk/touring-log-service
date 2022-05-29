@@ -7,7 +7,7 @@ import (
 	"os"
 	"os/exec"
 
-	"github.com/ktr03rtk/touring-log-service/vpn-client/client/pkg/downloader"
+	"github.com/ktr03rtk/touring-log-service/vpn-client/pkg/downloader"
 )
 
 var (

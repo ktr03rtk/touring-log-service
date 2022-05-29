@@ -25,9 +25,9 @@ fmt:
 	gofmt -s -w .
 
 fmtcheck:
-	sh -c "'$(CURDIR)/../../scripts/gofmtcheck.sh'"
+	sh -c "'$(CURDIR)/../scripts/gofmtcheck.sh'"
 
 sync:
-	sh -c "'$(CURDIR)/../../scripts/rsync.sh' $(HOST)"
+	sh -c "'$(CURDIR)/../scripts/rsync.sh' $(HOST)"
 
 .PHONY: default build run test_up test_down fmt fmtcheck sync

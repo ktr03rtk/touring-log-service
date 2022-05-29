@@ -1,4 +1,4 @@
-module github.com/ktr03rtk/touring-log-service/vpn-client/client
+module github.com/ktr03rtk/touring-log-service/vpn-client
 
 go 1.18
 
