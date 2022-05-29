@@ -1,0 +1,70 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  creationTimestamp: null
+  name: vpn
+spec: {}
+status: {}
+
+---
+apiVersion: bitnami.com/v1alpha1
+kind: SealedSecret
+metadata:
+  creationTimestamp: null
+  name: vpn-client-credential
+  namespace: vpn
+spec:
+  encryptedData:
+    access_key_id: AgCAggQewskQfDSEnV9z7Dxk4mgdBSgxjxiEBKDNqIPx6om3wdCYncJ9Nl6kQdyDSRzynpBTXqP2v6eVqSLAB4C8nmt1Mbh7fm+OTCidEEdHoDZWvXS+odCWV2zhaM4XL0EXFM0v9ViL4ZDyMeMHvrrad+tqhZ6x8/5HcSI2Ms18xLTOsmaE2n+iWL9j3f1D4gBPv+2X+jwk91I0e9IewqnzOCLqkKhKot3Alq7zvaWePXwl7BPtEqLzuA6kxdzh4PFVdYm1jmaI+6sB/3+jaSfGmA+wKrTr/MBc4Nk6eAx0CLm/OY0HJ8qOXAloye/sYqUaiacGUL1Ewcy7VWPLJAzhRxWFTIqP9tstMA/OIijygB/wWZDbhdzpxDQKMdJzxTw5QQDq/Slym6zW+7dONyvG4xeSLvRqtECQehOIeb05QoH1My1wzKajlHXDM5WjUh5m+nLcwyu2g4jnXQ/LsF+Xw2BN+zG8DA2o9cfwQ92dnN/Ojnwv8oXOv6x4YV5vjmHTftCpFAZk6u5ltd3JZ29bR5j90BDFiL1t5OEY5uRstDSeBE01Y85j0/rlW+OBCvUnxAxaMvRdRmorpOg85ZGV5Ml6F8S7q7hHsDvUxCX+QmTgcHGw4y/gOjrPfQDKYfDFGbkLXWmMliAM9VRXWAJRuf7NO6ldfqy4l5RpCGulZu3RHk2YbFrJIzXuKAdDeIiRROkvoLHnul6gVn2pxi6ciIT0Lw==
+    bucket: AgAWTMLqsqKeZxWewcTh+Fe57OC1aw7HzRnIhiyKFnYGLmbbt2mAbz/+DG3G+rqIDQeFtodCdERGALBdfLEgEDHH8Uc2IXqH5IrcZINMHvsmcHX8WqE67qzLWMYDzme5PqY4flfBu/dUOeruUekYNomg7ZyKZ++ow+rXZ/BuHbj0usUBCV5vcYTclND6d/jVjo2QG2sjta8c2VzdAoaUi43j/ZuUEnLdkuZNK8hO7M2wzptmp7I4X07tXMEt5hwjgOAq2rC5JcSjpHhP3f+Elc18E8VFu+aY0RQ2u5DQxBsmCMR5OiVO1rzkJy+wM1WaYUaOZrXzFNeTuWIMNoJlMNPEKxCYLlm0FgjvORMSld2V/eDIumf8co6aVRpXT6jVJq9eWgXaboyPvP5e8+fPhoX6dJnoDd7uPd8C62h8yYOW77yDKdoo5nP3a2fsuYXqdOJ2C9z6rcof4b17T2vnSgi8VX0xFfEAU5k0kPjw2HUb+a5PmRFDpFkiNU5/9T3HDa+hEm9PmQX2pEnzYoDMi6P8xZXYQxTIYlyivYmS0TwFUl7VUArU0THZCH74BJ/9Za0Wo1O3uAyx2fjkqptt2cTID48S1ppLap6cvfwewhsYUzpBkOiLJxQ3WMrxvjEyCimU97rmKT4VjZsPogBrQqRh1VMZuUkDviSbMukOVgsnBUCTbrudn195wt9qrSVIm9icCGDMWKggzqbU5cTfhoEqtvvFkeNzNT7FFEzNs6lRipzYbzJHQGSJ++fq8A==
+    secret_access_key: AgCUCxnv8aQM6wVTHPoTehGvuxTpBP6wvNtRPDf/f4eLml1u5nCVdsYHgFWsbnqoBc2ZRrn1sxi4gjcJNv/pgTuJt3IT4n29EpC6SFjvIhyCpNYs2vtPasiqOJX+S1LjzidkycAnIoVhAvkkQPVwyU+YaoYiPx6OWhf5dFmCmqa71eQ7+XXSnb8cNM56O3BSRoW0EEjZU7F6bR+pdskk/xdpX5/M4dvFlC3KgDEvhg/ZIvntw9O3wtkMDzs7d6BiDjSUAmNNWLEZ9ar/Im8k4cBkdK5rXIU5pRPOrO1BiCJ/AMVRX03uG4t8GG7bhIJ1Fl9FS7ZTMt7hAa24cnoi0isCGctXi1/SxEJNNkcAQToW8C6gWqUp83Z2eDIf+1Vn9tEPKjoaaYo8rbDg5bN95ShwuNRbi4LRw/n9ruyIKPfHj+oEt4+gO3PLTiiqqkazQwSdqp3+rRN74voPlBoSzq7a18vv4PJrdtsg/UoNJWF7KdxAhNgj0GTzrVsDbmQnuN0YJ7JctiMwa7HGhbX6NRsksNp3CF5fLWxQzybAvBZKW6DhXT4FObuhM/2uEammXEjOK62Xr/QahEQ5ci+VUQkN6xPCHJ0SZl4ZA6A6zcvmrpPExQMnOtZd75rsdMHw550AIXiONAkPCNVv/vswTwJgOPASLuFwNL4umZWZVOgWhPv3akIlZOZ3K/BRsnKdDM4ulu2KGydsmD19cFDv5ZgCHHlJYY3c1EELv0ScOS0dgck/wsxKZizQ
+  template:
+    data: null
+    metadata:
+      creationTimestamp: null
+      name: vpn-client-credential
+      namespace: vpn
+
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: vpn-client
+  namespace: vpn
+spec:
+  schedule: "*/1 * * * *"
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          hostNetwork: true
+          restartPolicy: Never
+          containers:
+            - image: ghcr.io/ktr03rtk/touring-log-service/vpn-client/client:v0.0.2
+              name: vpn-client
+              command: ["client"]
+              ports:
+                - containerPort: 1194
+              securityContext:
+                privileged: true
+              env:
+                - name: AWS_ACCESS_KEY_ID
+                  valueFrom:
+                    secretKeyRef:
+                      name: vpn-client-credential
+                      key: access_key_id
+                - name: AWS_SECRET_ACCESS_KEY
+                  valueFrom:
+                    secretKeyRef:
+                      name: vpn-client-credential
+                      key: secret_access_key
+                - name: REGION
+                  value: ap-northeast-1
+                - name: BUCKET
+                  valueFrom:
+                    secretKeyRef:
+                      name: vpn-client-credential
+                      key: bucket
+                - name: KEY
+                  value: client-ovpn/client.ovpn
