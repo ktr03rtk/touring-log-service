@@ -11,3 +11,6 @@ services:
     environment:
       AWS_ACCESS_KEY_ID: foo
       AWS_SECRET_ACCESS_KEY: bar
+      REGION: ap-northeast-1
+      BUCKET: baz
+      KEY: client-ovpn/client.ovpn

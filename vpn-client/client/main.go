@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"io"
 	"log"
@@ -14,48 +15,50 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 )
 
-// var (
-// 	sourceDir      string
-// 	uploadInterval time.Duration
-// )
+var (
+	region string
+	bucket string
+	key    string
+)
 
-// func init() {
-// 	if err := getEnv(); err != nil {
-// 		log.Fatal(err)
-// 	}
-// }
+const (
+	distDir      = "/opt/vpn_client/"
+	fileName     = "client.ovpn"
+	retry_config = "\nconnect-retry-max 10"
+)
 
-// func getEnv() error {
-// 	d, ok := os.LookupEnv("SOURCE_DIRECTORY")
-// 	if !ok {
-// 		return errors.New("env SOURCE_DIRECTORY is not found")
-// 	}
+func init() {
+	if err := getEnv(); err != nil {
+		log.Fatal(err)
+	}
+}
 
-// 	sourceDir = d
+func getEnv() error {
+	r, ok := os.LookupEnv("REGION")
+	if !ok {
+		return errors.New("env REGION is not found")
+	}
 
-// 	r, ok := os.LookupEnv("UPLOAD_INTERVAL_SECONDS")
-// 	if !ok {
-// 		return errors.New("env UPLOAD_INTERVAL_SECONDS is not found")
-// 	}
+	region = r
 
-// 	i, err := strconv.Atoi(r)
-// 	if err != nil {
-// 		return errors.New("env UPLOAD_INTERVAL_SECONDS is not integer")
-// 	}
+	b, ok := os.LookupEnv("BUCKET")
+	if !ok {
+		return errors.New("env BUCKET is not found")
+	}
 
-// 	uploadInterval = time.Duration(i) * time.Second
+	bucket = b
 
-// 	return nil
-// }
+	k, ok := os.LookupEnv("KEY")
+	if !ok {
+		return errors.New("env KEY is not found")
+	}
+
+	key = k
+
+	return nil
+}
 
 func main() {
-	region := "ap-northeast-1"
-	bucket := "foo"
-	key := "client-ovpn/client.ovpn"
-	distDir := "/opt/vpn_client/"
-	fileName := "client.ovpn"
-	retry_config := "\nconnect-retry-max 10"
-
 	ctx := context.Background()
 
 	cfg, err := config.LoadDefaultConfig(ctx, config.WithRegion(region))
