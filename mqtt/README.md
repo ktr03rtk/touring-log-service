@@ -1,10 +1,14 @@
 # MQTT Server
 
+## Purpose
+
+The pub/sub server pod receives touring log from raspberry pi, and send log to servers run by home k8s.
+
 ## Initialization
 
 ### Create mqtt server certificate
 
-Set your mqtt server domein to `IP` value in `script/create_cert.sh` and execute the script.
+Set your mqtt server domain to `IP` value in `script/create_cert.sh` and execute the script.
 
 ## Create sealed secret manifest of mqtt server certificate
 
@@ -12,7 +16,6 @@ Install kubeseal cli and create controller resource. [github](https://github.com
 Create sealed secret manifest from certificate.
 
 ```bash
-kubectl create ns mqtt
 kubectl create secret -n mqtt generic mqtt-server-certificate \
   --from-file=ca.crt \
   --from-file=server.crt \
