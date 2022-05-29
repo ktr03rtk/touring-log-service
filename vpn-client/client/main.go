@@ -3,16 +3,11 @@ package main
 import (
 	"context"
 	"errors"
-	"fmt"
-	"io"
 	"log"
 	"os"
 	"os/exec"
-	"path/filepath"
 
-	"github.com/aws/aws-sdk-go-v2/aws"
-	"github.com/aws/aws-sdk-go-v2/config"
-	"github.com/aws/aws-sdk-go-v2/service/s3"
+	"github.com/ktr03rtk/touring-log-service/vpn-client/client/pkg/downloader"
 )
 
 var (
@@ -22,9 +17,8 @@ var (
 )
 
 const (
-	distDir      = "/opt/vpn_client/"
-	fileName     = "client.ovpn"
-	retry_config = "\nconnect-retry-max 10"
+	distDir  = "/opt/vpn_client/"
+	fileName = "client.ovpn"
 )
 
 func init() {
@@ -61,41 +55,13 @@ func getEnv() error {
 func main() {
 	ctx := context.Background()
 
-	cfg, err := config.LoadDefaultConfig(ctx, config.WithRegion(region))
+	client, err := downloader.NewDownloader(ctx, region)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	client := s3.NewFromConfig(cfg)
-
-	input := &s3.GetObjectInput{
-		Bucket: aws.String(bucket),
-		Key:    aws.String(key),
-	}
-
-	output, err := client.GetObject(ctx, input)
-	if err != nil {
+	if err := client.DownloadNewVpnConfig(ctx, bucket, key, distDir, fileName); err != nil {
 		log.Fatal(err)
-	}
-	defer output.Body.Close()
-
-	b, err := io.ReadAll(output.Body)
-	if err != nil {
-		log.Fatal(err)
-		// return nil, errors.Wrapf(err, "failed to read file")
-	}
-
-	filePath := filepath.Join(distDir, fileName)
-	f, err := os.OpenFile(filePath, os.O_WRONLY|os.O_CREATE, 0o666)
-	if err != nil {
-		log.Fatal(err)
-		// return errors.Wrapf(err, "failed to create file")
-	}
-	defer f.Close()
-
-	if _, err := fmt.Fprintln(f, string(b), retry_config); err != nil {
-		log.Fatal(err)
-		// return errors.Wrapf(err, "failed to write file")
 	}
 
 	if err := exec.Command("openvpn", "--config", distDir+fileName).Run(); err != nil {
