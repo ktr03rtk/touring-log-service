@@ -57,14 +57,17 @@ func main() {
 
 	client, err := downloader.NewDownloader(ctx, region)
 	if err != nil {
-		log.Fatal(err)
+		log.Print(err)
+		os.Exit(0)
 	}
 
 	if err := client.DownloadNewVpnConfig(ctx, bucket, key, distDir, fileName); err != nil {
-		log.Fatal(err)
+		log.Print(err)
+		os.Exit(0)
 	}
 
 	if err := exec.Command("openvpn", "--config", distDir+fileName).Run(); err != nil {
-		log.Fatal(err)
+		log.Print(err)
+		os.Exit(0)
 	}
 }
