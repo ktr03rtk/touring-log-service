@@ -1,0 +1,6 @@
+services:
+  vpn_client:
+    build:
+      target: build-stage
+    volumes:
+      - ${PWD}:/opt/vpn_client
