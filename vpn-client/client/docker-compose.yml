@@ -1,0 +1,13 @@
+services:
+  vpn_client:
+    container_name: vpn_client
+    build:
+      context: .
+      args:
+        TZ: Asia/Tokyo
+    network_mode: host
+    tty: true
+    privileged: true
+    environment:
+      AWS_ACCESS_KEY_ID: foo
+      AWS_SECRET_ACCESS_KEY: bar
