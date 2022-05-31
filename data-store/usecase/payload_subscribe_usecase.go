@@ -13,7 +13,7 @@ const (
 )
 
 type PayloadSubscribeUsecase interface {
-	Execute(context.Context, <-chan *model.Payload) error
+	Execute(context.Context, chan<- *model.Payload) error
 }
 
 type payloadSubscribeUsecase struct {
@@ -26,7 +26,7 @@ func NewPayloadSubscribeUsecase(pr repository.PayloadSubscribeRepository) Payloa
 	}
 }
 
-func (pu *payloadSubscribeUsecase) Execute(ctx context.Context, ch <-chan *model.Payload) error {
+func (pu *payloadSubscribeUsecase) Execute(ctx context.Context, ch chan<- *model.Payload) error {
 	if err := pu.payloadSubscribeRepository.Subscribe(ctx, ch); err != nil {
 		return errors.Wrapf(err, "failed to execute payload subscribe usecase")
 	}

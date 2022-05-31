@@ -36,7 +36,7 @@ func (m *MockPayloadSubscribeRepository) EXPECT() *MockPayloadSubscribeRepositor
 }
 
 // Subscribe mocks base method.
-func (m *MockPayloadSubscribeRepository) Subscribe(arg0 context.Context, arg1 <-chan *model.Payload) error {
+func (m *MockPayloadSubscribeRepository) Subscribe(arg0 context.Context, arg1 chan<- *model.Payload) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Subscribe", arg0, arg1)
 	ret0, _ := ret[0].(error)

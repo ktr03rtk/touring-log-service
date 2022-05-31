@@ -8,5 +8,5 @@ import (
 )
 
 type PayloadSubscribeRepository interface {
-	Subscribe(context.Context, <-chan *model.Payload) error
+	Subscribe(context.Context, chan<- *model.Payload) error
 }
