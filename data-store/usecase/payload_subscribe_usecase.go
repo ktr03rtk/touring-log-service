@@ -8,10 +8,6 @@ import (
 	"github.com/pkg/errors"
 )
 
-const (
-	concurrency = 100
-)
-
 type PayloadSubscribeUsecase interface {
 	Execute(context.Context, chan<- *model.Payload) error
 }

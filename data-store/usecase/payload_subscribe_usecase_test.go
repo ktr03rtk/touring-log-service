@@ -43,7 +43,7 @@ func TestPayloadSubscribeUsecaseExecute(t *testing.T) {
 			usecase := NewPayloadSubscribeUsecase(repository)
 
 			ctx := context.Background()
-			ch := make(chan *model.Payload, concurrency)
+			ch := make(chan *model.Payload)
 
 			repository.EXPECT().Subscribe(ctx, gomock.Any()).Return(tt.returnErr).Times(1)
 
