@@ -15,7 +15,7 @@ import (
 )
 
 func TestPayloadHandler(t *testing.T) {
-	// t.Parallel()
+	t.Parallel()
 
 	testPayload, err := model.NewPayload([]byte("test message"), "touring-log/raw/thing=thingName/month=01/day=12/2022-01-12-12-51.dat")
 	assert.Nil(t, err)
@@ -42,7 +42,7 @@ func TestPayloadHandler(t *testing.T) {
 			nil,
 			errors.New("failed to execute payload subscribe usecase"),
 			1,
-			0,
+			1,
 		},
 		{
 			"store error case",
@@ -57,7 +57,7 @@ func TestPayloadHandler(t *testing.T) {
 	for _, tt := range tests {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
-			// t.Parallel()
+			t.Parallel()
 
 			ctrl := gomock.NewController(t)
 			defer ctrl.Finish()
@@ -72,8 +72,8 @@ func TestPayloadHandler(t *testing.T) {
 			ctx, cancel := context.WithCancel(context.Background())
 			eg, ctx := errgroup.WithContext(ctx)
 
-			sbr.EXPECT().Subscribe(ctx, gomock.Any()).Return(tt.subscribeErr).Times(tt.subscribeCallTimes)
-			str.EXPECT().Store(ctx, testPayload).Return(tt.storeErr).Times(tt.storeCallTimes)
+			sbr.EXPECT().Subscribe(gomock.Any(), gomock.Any()).Return(tt.subscribeErr).Times(tt.subscribeCallTimes)
+			str.EXPECT().Store(gomock.Any(), testPayload).Return(tt.storeErr).Times(tt.storeCallTimes)
 
 			eg.Go(func() error { return ph.Handle(ctx) })
 

@@ -5,6 +5,7 @@ import (
 
 	"github.com/ktr03rtk/touring-log-service/data-store/domain/model"
 	"github.com/ktr03rtk/touring-log-service/data-store/usecase"
+	"golang.org/x/sync/errgroup"
 )
 
 const (
@@ -31,12 +32,13 @@ func NewPayloadHandler(sbu usecase.PayloadSubscribeUsecase, stu usecase.PayloadS
 	}
 }
 
-func (ph payloadHandler) Handle(ctx context.Context) error {
-	if err := ph.payloadSubscribeUsecase.Execute(ctx, ph.payloadCh); err != nil {
-		return err
-	}
+func (ph payloadHandler) Handle(ctxParent context.Context) error {
+	eg, ctx := errgroup.WithContext(ctxParent)
 
-	if err := ph.payloadStoreUsecase.Execute(ctx, ph.payloadCh); err != nil {
+	eg.Go(func() error { return ph.payloadSubscribeUsecase.Execute(ctx, ph.payloadCh) })
+	eg.Go(func() error { return ph.payloadStoreUsecase.Execute(ctx, ph.payloadCh) })
+
+	if err := eg.Wait(); err != nil {
 		return err
 	}
 
