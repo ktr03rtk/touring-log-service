@@ -44,8 +44,8 @@ func (sp *s3Persistence) Store(ctx context.Context, payload *model.Payload) erro
 	}
 
 	input := &s3.PutObjectInput{
-		Bucket: aws.String(strings.TrimSuffix(sp.bucket, "dat") + "gz"),
-		Key:    aws.String(payload.GetKey()),
+		Bucket: aws.String(sp.bucket),
+		Key:    aws.String(strings.TrimSuffix(payload.GetKey(), "dat") + "gz"),
 		Body:   &buf,
 	}
 
