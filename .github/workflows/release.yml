@@ -17,7 +17,13 @@ jobs:
       targetDir: vpn-client
       tag: ${{ github.ref_name }}
 
+  test_data_store:
+    uses: ./.github/workflows/test-workflow.yml
+    with:
+      targetDir: data-store
+
   build_and_push_data_store:
+    needs: test_data_store
     uses: ./.github/workflows/build-workflow.yml
     with:
       targetDir: data-store
