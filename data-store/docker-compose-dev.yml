@@ -1,0 +1,6 @@
+services:
+  data_store:
+    build:
+      target: build-stage
+    volumes:
+      - ${PWD}:/opt/data_store

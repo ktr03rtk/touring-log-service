@@ -1,0 +1,26 @@
+services:
+  data_store:
+    container_name: data_store
+    build:
+      context: .
+      args:
+        TZ: Asia/Tokyo
+    network_mode: host
+    tty: true
+    volumes:
+      - ${PWD}/cert:/var/opt/data_store/cert
+    environment:
+      QOS: 1
+      KEEP_ALIVE: 60
+      CONNECT_RETRY_DELAY: 10000
+      CA_PATH: /var/opt/data_store/cert/ca.crt
+      CERT_PATH: /var/opt/data_store/cert/client.crt
+      KEY_PATH: /var/opt/data_store/cert/client.key
+      MQTT_HOST: ${MQTT_HOST}
+      MQTT_PORT: ${MQTT_PORT}
+      MQTT_CLIENT: ${MQTT_CLIENT}
+      TOPIC: ${TOPIC}
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+      REGION: ${REGION}
+      BUCKET: ${BUCKET}

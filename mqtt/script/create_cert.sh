@@ -20,7 +20,7 @@ openssl genrsa -out server.key 2048
 openssl req -subj "$SUBJECT_SERVER" -out server.csr -key server.key -new
 
 # Send the CSR to the CA, or sign it with your CA key:
-openssl x509 -req -in server.csr -CA ca.crt -CAkey ca.key -CAcreateserial -out server.crt -days 3650
+openssl x509 -req -in server.csr -CA ca.crt -CAkey ca.key -CAcreateserial -out server.crt -days 3650 -extfile subjectnames.txt
 
 # Client
 # Generate a client key.
@@ -30,7 +30,7 @@ openssl genrsa -out client.key 2048
 openssl req -subj "$SUBJECT_CLIENT" -out client.csr -key client.key -new
 
 # Send the CSR to the CA, or sign it with your CA key:
-openssl x509 -req -in client.csr -CA ca.crt -CAkey ca.key -CAcreateserial -out client.crt -days 3650
+openssl x509 -req -in client.csr -CA ca.crt -CAkey ca.key -CAcreateserial -out client.crt -days 3650 -extfile subjectnames.txt
 
 mkdir -p ../cert
 mv *.srl *.csr *.crt *.key ../cert
