@@ -3,7 +3,8 @@ name: Create and publish image
 on:
   push:
     tags:
-      - v[0-9]+.[0-9]+.[0-9]+
+      - test
+      # - v[0-9]+.[0-9]+.[0-9]+
 
 permissions:
   contents: read
@@ -16,14 +17,8 @@ jobs:
       targetDir: vpn-client
       tag: ${{ github.ref_name }}
 
-  trivy_receiver:
-    runs-on: ubuntu-20.04
-    needs: build_and_push_vpn_client
-    steps:
-      - name: Run Trivy vulnerability scanner
-        uses: aquasecurity/trivy-action@master
-        with:
-          image-ref: ${{ needs.build_and_push_vpn_client.outputs.image-ref }}
-          format: table
-          exit-code: 1
-          severity: CRITICAL
+  build_and_push_data_store:
+    uses: ./.github/workflows/build-workflow.yml
+    with:
+      targetDir: data-store
+      tag: ${{ github.ref_name }}
