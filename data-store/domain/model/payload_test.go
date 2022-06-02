@@ -19,19 +19,19 @@ func TestNewPayload(t *testing.T) {
 	}{
 		{
 			"normal case",
-			"touring-log/raw/thing=thingName/month=01/day=12/2022-01-12-12-51.dat",
-			&Payload{message: message, key: "touring-log/raw/thing=thingName/month=01/day=12/2022-01-12-12-51.dat"},
+			"touring-log/raw/thing=thingName/year=2022/month=01/day=12/2022-01-12-12-51.dat",
+			&Payload{message: message, key: "touring-log/raw/thing=thingName/year=2022/month=01/day=12/2022-01-12-12-51.dat"},
 			nil,
 		},
 		{
 			"validate error case: month",
-			"touring-log/raw/thing=thingName/month=21/day=12/2022-01-12-12-51.dat",
+			"touring-log/raw/thing=thingName/year=2022/month=21/day=12/2022-01-12-12-51.dat",
 			nil,
 			errors.New("failed to validate key"),
 		},
 		{
 			"validate error case: object",
-			"touring-log/raw/thing=thingName/month=01/day=12/2022-01-12-12-error.dat",
+			"touring-log/raw/thing=thingName/year=2022/month=01/day=12/2022-01-12-12-error.dat",
 			nil,
 			errors.New("failed to validate key"),
 		},
