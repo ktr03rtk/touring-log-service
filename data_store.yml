@@ -1,0 +1,115 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  creationTimestamp: null
+  name: data-store
+spec: {}
+status: {}
+
+---
+apiVersion: bitnami.com/v1alpha1
+kind: SealedSecret
+metadata:
+  creationTimestamp: null
+  name: data-store-credential
+  namespace: data-store
+spec:
+  encryptedData:
+    access_key_id: AgB9UVDgm8qkID4C237KPgcSv1sTupSRqF/2yZpXduihsRDy+4CbfpYot80YgDBhsPbc9XbVvEM8ccL3YVKkagRsL9ptyfov3UGLKWNmdMsA9SYa+PK2aWJwrY0RIHsZLsHMWMo017Fr2JyTm/NYF0iQFvMk6qERXwcHrE4fTfTft7EQ2oSdEan65jBczSIlanibmR9+BCOjJ4ftw0Ab5HrUoQlUFzEVM/kJooQQnEV5YPY8UmBv/64SbQBvXtiN3kCR7lyKgcNiQOCvcKj0gdgpIHsrXWJ4OB0Z6Uec9TH8TT7n63alSJ9aj136IgDAQelqQUdfeisZgIHtxpH/XARgtpAKrziZWal+G+iuuAzyNEA00Zo6ME6V1vjH1iQ453gOazZe3e23NuC+gvNM5R4m6ssiOPFVDdKxg9AqbYJJeti66y2i4fQRDWWA42hABAKXQD7I3lSbp2ht0jq8nBpdKFfaYzUCddKKrO3Xtpwsdzh0+EVjMMfezbGXETuV2kzOsJkODJF37OMHH6pcjEoq3T9m8USBcpZemdjqQFQRPr/E8v240EVU6/OrWksMCjrguGtVCNLUbZ9mSBEZAKKWgHQytu3B/9yiFRvVbQKqCLuUpB1fXmCw58egdSGEyMsvWaRpJyJDMPOTkiy3w9RkEj/IrbMWmeVqEw5wnUw+dyebbKGQu13dMvBU0+kTtk75O/3vmrpzSgYvUVpiMzTNcIwAPA==
+    bucket: AgAUbFw8K88Whh+l0jOavsYVJyaYFywhaDdG8WUeBIjRNU/ne9wViL1oLUKSdSJ6DYSA6CcIld3JMUTO6NKIayenmtScM3qSMv0CxVq5fUMURcy0lzgBGtvekabyxVfTe1seik3WsICtvvBCVvStqEdi5V5Mq6fxLu3zJr1BNxKB+ztoGKZOxaFBvt3BvSH906wFtmkKz0lmr3ziL56qMxdt8ib0lf8st4uRoLgrgw4EJQpgKDAfc/u4AwJv++yupjUiQoq9zUXnjNAbQtG4q0hoU4/j/w5EM3obbhiTnyc4pDbuJf4qV+0sQD+yMabyAafZVKubqc0ZZMJMFM3WVzYlplOBoiWl9mEr2ajfKkuswLoZl8QL6VrM2MXbbnJHHVhMKIn69TAM4RNcm4usfGCFLeCZ6NgrbWu3PKF1+lJs33iRkUe4iol1aKWl90QoD1OzzQJPbXtJPPCaaV+U22HajN+d5yYc9e4r0KuFHi36FEzTgr28ysBR36vwgLEqTorsV1uVxHhbpQVwcVoI0nacdKO8CqSxyhV8L1F34I3anNIx1KbEUMdvLsqwiQcnYTkEqDqJqXYJP2aQQPa7zRVVaIQpU/eMQ9nTBxV1htz0Wmw0NvKnR8/I6t2EwgiGs6oQRixwFpfSYgFX9v8XPUKslWSzltWkGeU8KuW49NT3BCnKeq97atZ+aSqxql/szQrKDJg8OZARC0DdrLjUyM3bY3MKOG7t7Guy4EYZ4GJNGHI=
+    secret_access_key: AgCt7++LGxMINNny02dADjCAY1Jifvp2VyC7BAwIpe2ZstWo8U9020rCXeEOVTXTLAcBh85nae5I+841ovWTdG8ko40iej10qyyjsmSYNkUVvU1KvPdNe+WnLPhr7JwBpzcYy4xJYTjvCIePX+IOybJk6D1IgLcZiRJE/QicdEoL6ZLkdB794dBppVGI3AySGQIJCy7yUDULaFzLdjdzychVsoTaTe0Cv6N/lpd6xdKcoxzN9eKoicJTm10rEuXWTvC9geJRWAwz3gnwO5my/TxC9ERuiMTEWtbUhEdgCC+ytMNlQBEIHbzhAvbJOSHBpMHPfVdynV4wgMTcdWzaECkntRHbyULHDb8Cq/kN8xOhwV+dwDTMyVgj5oLBTLmU/CqGaCiCooapSqNl8fYB+UnvoDGjgPErkzWUMd65x5ruGqdIO6N6EUpxOFrnpzo76t8VGG/RgsXlgAt+XXNi3sALF3iv377UXPyQJwawwAgaS90BEC4WPukeolaiajUnyzaPDr7ZQAtj/4oAWDbLwulUFkllp4xVJTtwv8s+fc7iGMgOLafXkLXUNkjDDbBli3xsQa1JxvoZbE7NtMVHibVq1C2DyDn9cEg7RTH7cRhbWRyDaoSi/RhK3p63B0AMN7IVskczdHH/DIK/iKYkrFU6j/kmhhtoFpJrQSN/1QQrP3W9E5BjQW0a2zrWEIXK7cwEgS18JjzukSoSHhrAwNg8pdIVCByYMkktkJLX8L0eF90DpjN7jb5q
+  template:
+    data: null
+    metadata:
+      creationTimestamp: null
+      name: data-store-credential
+      namespace: data-store
+
+---
+apiVersion: bitnami.com/v1alpha1
+kind: SealedSecret
+metadata:
+  creationTimestamp: null
+  name: mqtt-client-certificate
+  namespace: data-store
+spec:
+  encryptedData:
+    ca.crt: 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
+    client.crt: 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
+    client.key: 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
+  template:
+    data: null
+    metadata:
+      creationTimestamp: null
+      name: mqtt-client-certificate
+      namespace: data-store
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: data-store
+  name: data-store
+  namespace: data-store
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: data-store
+  template:
+    metadata:
+      labels:
+        app: data-store
+    spec:
+      hostNetwork: true
+      containers:
+        - image: ghcr.io/ktr03rtk/touring-log-service/data-store:v0.0.4
+          name: data-store
+          volumeMounts:
+            - mountPath: /etc/data_store/cert
+              name: certificate
+              readOnly: true
+          env:
+            - name: AWS_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: data-store-credential
+                  key: access_key_id
+            - name: AWS_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: data-store-credential
+                  key: secret_access_key
+            - name: BUCKET
+              valueFrom:
+                secretKeyRef:
+                  name: data-store-credential
+                  key: bucket
+            - name: REGION
+              value: ap-northeast-1
+            - name: TOPIC
+              value: "touring-log/raw/#"
+            - name: MQTT_HOST
+              value: "192.168.10.109"
+            - name: MQTT_PORT
+              value: "31883"
+            - name: MQTT_CLIENT
+              value: data-store
+            - name: QOS
+              value: "1"
+            - name: KEEP_ALIVE
+              value: "60"
+            - name: CONNECT_RETRY_DELAY
+              value: "10000"
+            - name: CA_PATH
+              value: /etc/data_store/cert/ca.crt
+            - name: CERT_PATH
+              value: /etc/data_store/cert/client.crt
+            - name: KEY_PATH
+              value: /etc/data_store/cert/client.key
+      volumes:
+        - name: certificate
+          secret:
+            secretName: mqtt-client-certificate
