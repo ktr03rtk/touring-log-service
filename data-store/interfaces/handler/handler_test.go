@@ -17,7 +17,7 @@ import (
 func TestPayloadHandler(t *testing.T) {
 	t.Parallel()
 
-	testPayload, err := model.NewPayload([]byte("test message"), "touring-log/raw/thing=thingName/year=2022/month=01/day=12/2022-01-12-12-51.dat")
+	testPayload, err := model.NewPayload([]byte("test message"), "touring-log/raw/thing=thingName/year=2022/month=01/day=12/2022-01-12-12-51-10.dat")
 	assert.Nil(t, err)
 
 	tests := []struct {
