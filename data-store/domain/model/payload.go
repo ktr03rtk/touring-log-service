@@ -6,7 +6,7 @@ import (
 )
 
 // example key: touring-log/raw/thing=thingName/year=2022/month=01/day=12/2022-01-12-12-51.dat.
-var keyValidater = regexp.MustCompile(`^touring-log/raw/thing=.+/year=\d{4}/month=[01][0-9]/day=[01][0-9]/\d{4}-\d{2}-\d{2}-\d{2}-\d{2}.dat$`)
+var keyValidater = regexp.MustCompile(`^touring-log/raw/thing=.+/year=\d{4}/month=[01][0-9]/day=[01][0-9]/\d{4}-\d{2}-\d{2}-\d{2}-\d{2}-\d{2}.dat$`)
 
 type Payload struct {
 	message []byte
