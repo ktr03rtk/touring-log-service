@@ -65,7 +65,7 @@ spec:
     spec:
       hostNetwork: true
       containers:
-        - image: ghcr.io/ktr03rtk/touring-log-service/data-store:v0.0.4
+        - image: ghcr.io/ktr03rtk/touring-log-service/data-store:v0.0.5
           name: data-store
           volumeMounts:
             - mountPath: /etc/data_store/cert

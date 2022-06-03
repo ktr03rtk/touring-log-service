@@ -41,7 +41,7 @@ spec:
           hostNetwork: true
           restartPolicy: Never
           containers:
-            - image: ghcr.io/ktr03rtk/touring-log-service/vpn-client:v0.0.3
+            - image: ghcr.io/ktr03rtk/touring-log-service/vpn-client:v0.0.5
               name: vpn-client
               command: ["client"]
               ports:
