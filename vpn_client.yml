@@ -15,9 +15,11 @@ metadata:
   namespace: vpn
 spec:
   encryptedData:
-    access_key_id: AgCAggQewskQfDSEnV9z7Dxk4mgdBSgxjxiEBKDNqIPx6om3wdCYncJ9Nl6kQdyDSRzynpBTXqP2v6eVqSLAB4C8nmt1Mbh7fm+OTCidEEdHoDZWvXS+odCWV2zhaM4XL0EXFM0v9ViL4ZDyMeMHvrrad+tqhZ6x8/5HcSI2Ms18xLTOsmaE2n+iWL9j3f1D4gBPv+2X+jwk91I0e9IewqnzOCLqkKhKot3Alq7zvaWePXwl7BPtEqLzuA6kxdzh4PFVdYm1jmaI+6sB/3+jaSfGmA+wKrTr/MBc4Nk6eAx0CLm/OY0HJ8qOXAloye/sYqUaiacGUL1Ewcy7VWPLJAzhRxWFTIqP9tstMA/OIijygB/wWZDbhdzpxDQKMdJzxTw5QQDq/Slym6zW+7dONyvG4xeSLvRqtECQehOIeb05QoH1My1wzKajlHXDM5WjUh5m+nLcwyu2g4jnXQ/LsF+Xw2BN+zG8DA2o9cfwQ92dnN/Ojnwv8oXOv6x4YV5vjmHTftCpFAZk6u5ltd3JZ29bR5j90BDFiL1t5OEY5uRstDSeBE01Y85j0/rlW+OBCvUnxAxaMvRdRmorpOg85ZGV5Ml6F8S7q7hHsDvUxCX+QmTgcHGw4y/gOjrPfQDKYfDFGbkLXWmMliAM9VRXWAJRuf7NO6ldfqy4l5RpCGulZu3RHk2YbFrJIzXuKAdDeIiRROkvoLHnul6gVn2pxi6ciIT0Lw==
-    bucket: AgAWTMLqsqKeZxWewcTh+Fe57OC1aw7HzRnIhiyKFnYGLmbbt2mAbz/+DG3G+rqIDQeFtodCdERGALBdfLEgEDHH8Uc2IXqH5IrcZINMHvsmcHX8WqE67qzLWMYDzme5PqY4flfBu/dUOeruUekYNomg7ZyKZ++ow+rXZ/BuHbj0usUBCV5vcYTclND6d/jVjo2QG2sjta8c2VzdAoaUi43j/ZuUEnLdkuZNK8hO7M2wzptmp7I4X07tXMEt5hwjgOAq2rC5JcSjpHhP3f+Elc18E8VFu+aY0RQ2u5DQxBsmCMR5OiVO1rzkJy+wM1WaYUaOZrXzFNeTuWIMNoJlMNPEKxCYLlm0FgjvORMSld2V/eDIumf8co6aVRpXT6jVJq9eWgXaboyPvP5e8+fPhoX6dJnoDd7uPd8C62h8yYOW77yDKdoo5nP3a2fsuYXqdOJ2C9z6rcof4b17T2vnSgi8VX0xFfEAU5k0kPjw2HUb+a5PmRFDpFkiNU5/9T3HDa+hEm9PmQX2pEnzYoDMi6P8xZXYQxTIYlyivYmS0TwFUl7VUArU0THZCH74BJ/9Za0Wo1O3uAyx2fjkqptt2cTID48S1ppLap6cvfwewhsYUzpBkOiLJxQ3WMrxvjEyCimU97rmKT4VjZsPogBrQqRh1VMZuUkDviSbMukOVgsnBUCTbrudn195wt9qrSVIm9icCGDMWKggzqbU5cTfhoEqtvvFkeNzNT7FFEzNs6lRipzYbzJHQGSJ++fq8A==
-    secret_access_key: AgCUCxnv8aQM6wVTHPoTehGvuxTpBP6wvNtRPDf/f4eLml1u5nCVdsYHgFWsbnqoBc2ZRrn1sxi4gjcJNv/pgTuJt3IT4n29EpC6SFjvIhyCpNYs2vtPasiqOJX+S1LjzidkycAnIoVhAvkkQPVwyU+YaoYiPx6OWhf5dFmCmqa71eQ7+XXSnb8cNM56O3BSRoW0EEjZU7F6bR+pdskk/xdpX5/M4dvFlC3KgDEvhg/ZIvntw9O3wtkMDzs7d6BiDjSUAmNNWLEZ9ar/Im8k4cBkdK5rXIU5pRPOrO1BiCJ/AMVRX03uG4t8GG7bhIJ1Fl9FS7ZTMt7hAa24cnoi0isCGctXi1/SxEJNNkcAQToW8C6gWqUp83Z2eDIf+1Vn9tEPKjoaaYo8rbDg5bN95ShwuNRbi4LRw/n9ruyIKPfHj+oEt4+gO3PLTiiqqkazQwSdqp3+rRN74voPlBoSzq7a18vv4PJrdtsg/UoNJWF7KdxAhNgj0GTzrVsDbmQnuN0YJ7JctiMwa7HGhbX6NRsksNp3CF5fLWxQzybAvBZKW6DhXT4FObuhM/2uEammXEjOK62Xr/QahEQ5ci+VUQkN6xPCHJ0SZl4ZA6A6zcvmrpPExQMnOtZd75rsdMHw550AIXiONAkPCNVv/vswTwJgOPASLuFwNL4umZWZVOgWhPv3akIlZOZ3K/BRsnKdDM4ulu2KGydsmD19cFDv5ZgCHHlJYY3c1EELv0ScOS0dgck/wsxKZizQ
+    access_key_id: AgC1FzOUNgaj/sP8PItInr8YiBbcxCyudF15dQdVnRvK8frB5GDIyU42GcH4SjPKC+bn46Ps6R+xVLX8xd850Wkwy221/zP4O/hVoVwGFDCJ1zqspRsRt9BI8ep9w5saqtPKCcbSYOmgGxT55JIAxjai503+Iagb5mNpitf7zLnvQDn40Ziu9LaE/DpNNqhnJ12MVu9HVywDu+CCMZ6EO456019eS1jtcOj012qKz1g/QwUDYseHd8uKtWlWewpqkhMuAzukm86o9kXMnWK1fQkw/ydKh33W2x7oHRBG3vH16d18Y1OOXBUIZZQAkrn9Xa6M56P66BA1EKL4hxf4o2oxjjMbEzi4n0idIXmBanHgU6Qky5XbvU3YiJLm/vKUh7TzBzaSPZ5ZUJqsBltn+879Qr24l1wYzEmWnAoTfW07YBbZS7Dr3w8v0gG7svls/EaeSRGtuwk1jQa/NtMQCjvWsv9tvDQ6m9Ttx7w1sVzMMyEFse53UPc3aY8HcyfkUKAcgnrUF730zExmOdKB3KUTSVJIU0BKmzrkZywWwNZ2Hb5UxmVN6E1WPcsaPxD70dHx1BDXQAj0urMS0tSQAcML62RxQ+Vg/HLH2J0SYJzO+KbV4EbLp2w4RmWIzETPZHT4d5V2Qr9CDjjxuIObmYGPb2VSDpGcyfzjyQjW5tvuaJKWbDa1xPYdNJ2Mcx2KHXEayKHNNXL+tGjsQDcIA5ukHKrIhg==
+    api_key: AgBvhclxvnrsJSouRJ9R3Fq9AcyiW/f2GFEFpD+UkN984F8YfoCasir4ubAfUYnrpGkNybVB8oshvocALuy+XdIKXojbyQru0CMrFEMyISKytxmg76G6eatp5WmwtGLOKPEfZwOFKoCtGHStj8ZgX+vUKhtP5mebM5RUCyt9l1CB51Uazz3BzsIQHVDhpq9mh2CRE3WRj+5N4dE7Rkv+huUGy+D6rc3lmzskV2rJfAdx9npHnlJjHGtJUY5Uvwv6voFl8cEu25wN7Qa0ArZ5r6a9CRSOaNcbztWm2Egc+yXo3xpauaNUF5p4uRwlDJRAwHi5lGw51gatcWLpHe1s5YzJSQzE/Cim21aJGkYxq0GBAyxbJI0hih1fD4J+4bGZB6ubJjI86gigkOAq31+UuO6cQX164sxpsOcCzSaggGVf9iWZZFYhnVd5GFhJZ9pn1p0XP/4FqqGQgsJG3MMoGwp8tf9nOREq8pZKCJe6RwGrkoU5srjaajFXq7LfzG0e5FhPb84XAJCjfIfK9jVhMxWMrSadg/314x6AB+UZy0ggo4qy0kS3i9pR/ysxuDm8f3doEsggLpv+5eNuEbRAFD0jkxOpcvUf/10PVnndSw7sgkTbc9quphBy9fXysl4oFwQXgWPhPEnfBVxVas+Te3OwVy+wykONLJgr+rh4KidX/BmrooMB7RTPuXWim38gwRKzMONKB8tl88CNsLNNWUq0zT5VV7H2MIb3yH0mVIlecisePX7OtY1Ty8vJXT705d7CpRQXXd2zZUJ3brKUgQ==
+    bucket: AgAYDStgXAwwumqHIRvyXX23WXhEC08ig1zEi6UDA6y0mJlx52okbju8EMlH46PFfcjKjBTYznJRWvkIRfgnx+9JwLWYUtzvE1SuiXFKrx+6WEH0jv3tHdcm0gRY9m2DQBHqCMxQobuIzuzSMdzE3qKrP5Uy3X7uM09y7IdqRjxfUjN6N/UoMPUeGI/Ra5q6qmxY1SpSfwI4ZxOetytKBGOOvnDq/H/xfKmnmgCmVUK868G51By6lvnS7B0BxDSFmxlqsoMyCVFOWYROjyJb4lyRdwSFEPyDN/bWPfE456a61rvvMx9b3kebE6cygGrUQomZOMZNWO9qCO3TuhVVDTP9dJf6bz1hyhu8hNUs9S6VKRVSRf1GuEH5vkhZDht9MTLjkdcUBgvBI0UhJd21WzIunkRfIyZ18+JbQSujZpxo5X8d2iE+EGN2yzzYYk7ztFcYHg+5U5YIVfc4aMT4RD8ULNRMeY6ntpfgAHAwQ2gFBeKR9hGqOvOvKW81umwEGcpxhfP6p8v+5kvnVmTFhSrdXKiE+la+bIsAnvZToMmFHs4qvdrGL2f6ux/5Q9QLI0QUXn7VCccYp1UE02CWlRaY8HugsUSvHj4Q8bkuwJU6sbg265CWKSeVm1Dk2BNMESk+jpmdTo8yRqdAM4Rkfk+/xKyxwWtFal+aBM5k2+U7MeziSygN7+Vkw7QFz4Gx7OvWW2pQhE3o1ztIs/HY/H4HjCBmyPZrcYufOhHXUUYKqc682Ub5prqb+KH5nw==
+    endpoint: AgCmOeZsXZwzFon8x5A4si0E/kiMTxlrYh6FcMKIooWanS0/Zzzwyabt5XM/Sx4r4dPJ0CQVmlzTmcKrHqHypa1Ub9p1wNz72UStPU6WwG/oB4p2T1R+Km1qWvlLDRGB75A8vbrQGVfPQtKdc9kLzGxptxNoxGitW1D3BJo5saOgMArnRFSfTPzln/6dZRUSLtGhcsTilumbugRSLnUJazC6Hmr68Zylf1q0MgOCB4fw98GwQ4DaXDRsTTgpGdnGYV8SdZ6aGEuUJyCLcZz6ZpPZtNIfle3k1JDIKpfx6DIFrW4lET7nf01+GC0ZS0fgYlO3QWT25+og3NTzOFLiXbxjOgNdYiHDXAz27hq+RdRWQZgnYix4S3GNdfPk13Mwkp+AVFX948cJSTz++/72Pe7s0Kvj7zBPv2jskYgitq1NM9vbq1CBhceo+wR+TqiVtDcLjsjq/k/3bHgKxNJdorvaB6Q/EYzRBjSgLvavworTWsAqVSWkMyWmoE/atSRotZmO+30ZDfThIsgT3XDltAai90e47dFyECR5b3fe2emEtZXlSrcIVHKn6bOzMkATGuWb+Ysh8stoCSrM8gb0qxSru1NE/3+4/rHVe5p56o+j5XSirPTgIods5Kwo4Ij4ybT4h1o5zi2r0e/vDDCVpo3hhmFfbKs2vRoHRB4hIBqnkGQx0I/aaOpdc0nu/IokSmT9RstzPxKAbyGHT6gxNjv6qaUpunZMeKXIiBSDEfuDlYxIjg==
+    secret_access_key: AgCE9h4wjWXvx5maCEmyb3Lk6aU7kmAZjHcpGdLcF6DYina2UaGNJ7N/pzULOc2GBFpB994JWk218FZR3fEjjQZbCwTsOx/iD6dutFiwrL6veVFHxJB+5dy1J0YKmkzPIWF9p+ATkOTzR+OgdeS2j81315GoXh3aoPGRJI7Htc+vkJV1uVfcqrA4DNE+mmYSSuSKQZvhe/oi+//bHQ3/efZQzNxsdjhPwBgb3g2zWGZwDI8v+Ee5bBxt4i27V4Xb/R7JxxjYVLnSVNwZlh0SYKEab1RBH+Lynv9RAs8IwGBthf52nl1zX53wA840lXewytq9Ud1TvaAndbQao2glIW8T3H460UgNO9x4MhwJWHu2IUwgi0q/O+3VKBg/JTr69wquHlFdFvulHqOK5bE/GXKTy//TPuMc+we18DT9luGieJaFKPTlK6KOU1/s1yDFjapWo06nkJY6r2fuTB7YMMVXHeN7JkSKw5UYUHdtiO7MYAHmhuNYT/crwg92PF7KyUGejy+ocyJjREGlnvNuAi7R2RzYSLOQpLeIe9JWcfYo17NHwGcRTBcwKEF0JiyFQdB1rreJwiufHD2xU4/t/utc6KWbjh/NrphFhaDcLeSr9nqIaNk8AVAiDY+oRSNxZcEA47KZ019omAU8nRr72FKWJRX0VA5C5UQBp4TjQtw4+veZkMTLkjyVZ53Gi7h3FVNkY5T5dS9XyIg9zJ0jEg5AOEQ9kUfvvKAx7OmQYSSm+hH2SEiRX2qi
   template:
     data: null
     metadata:
@@ -40,6 +42,24 @@ spec:
         spec:
           hostNetwork: true
           restartPolicy: Never
+          initContainers:
+            - image: alpine:latest
+              name: liveness-client
+              command:
+                - sh
+                - "-c"
+                - 'wget -qO - --header="x-api-key: ${API_KEY}" ${ENDPOINT}'
+              env:
+                - name: API_KEY
+                  valueFrom:
+                    secretKeyRef:
+                      name: vpn-client-credential
+                      key: api_key
+                - name: ENDPOINT
+                  valueFrom:
+                    secretKeyRef:
+                      name: vpn-client-credential
+                      key: endpoint
           containers:
             - image: ghcr.io/ktr03rtk/touring-log-service/vpn-client:v0.0.5
               name: vpn-client

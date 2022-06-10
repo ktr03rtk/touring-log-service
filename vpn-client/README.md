@@ -13,6 +13,8 @@ Then, Remove command history from `~/.bash_history`.
 echo -n 'foo' > access_key_id.txt
 echo -n 'bar' > secret_access_key.txt
 echo -n 'baz' > bucket.txt
+echo -n 'foobar' > api_key.txt
+echo -n 'barbaz' > endpoint.txt
 ```
 
 Install kubeseal cli and create controller resource. [github](https://github.com/bitnami-labs/sealed-secrets)
@@ -23,9 +25,11 @@ kubectl create secret -n vpn generic vpn-client-credential \
   --from-file=access_key_id=./access_key_id.txt \
   --from-file=secret_access_key=./secret_access_key.txt \
   --from-file=bucket=./bucket.txt \
+  --from-file=api_key=./api_key.txt \
+  --from-file=endpoint=./endpoint.txt \
   -o yaml --dry-run=client >secret.yml
 kubeseal -o yaml <secret.yml >sealedsecret.yml
-rm secret.yml access_key_id.txt secret_access_key.txt bucket.txt
+rm secret.yml access_key_id.txt secret_access_key.txt bucket.txt api_key.txt endpoint.txt
 ```
 
 ## Copy sealed secret manifest to vpn client manifest
