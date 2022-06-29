@@ -78,7 +78,7 @@ const Upload = () => {
 
         <form onSubmit={confirmOnSubmit}>
           <label htmlFor='id1' className='d-grid gap-2 col-6 mx-auto'>
-            <span className='btn btn-primary'>SELECT</span>
+            <span className='btn btn-primary opacity-75'>SELECT</span>
             <input
               style={{ display: 'none' }}
               id='id1'
@@ -107,12 +107,12 @@ const Upload = () => {
           <br />
 
           {isLoading ? (
-            <button className='btn btn-primary  gap-2 col-6 mx-auto' type='submit' disabled>
+            <button className='btn btn-primary opacity-75 gap-2 col-6 mx-auto' type='submit' disabled>
               <span className='spinner-border spinner-border-sm' role='status' aria-hidden='true'></span>
               UPLOADING...
             </button>
           ) : (
-            <button className='btn btn-primary d-grid gap-2 col-6 mx-auto' type='submit'>
+            <button className='btn btn-primary opacity-75 d-grid gap-2 col-6 mx-auto' type='submit'>
               UPLOAD
             </button>
           )}
