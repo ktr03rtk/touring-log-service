@@ -9,7 +9,7 @@ import type { ReactConfirmAlertProps } from 'react-confirm-alert';
 
 const Upload = () => {
   const [images, setImages] = useState<File[]>([]);
-  const [isLoaded, setIsLoaded] = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [alert, setAlert] = useState<AlertType>({ type: 'd-none', message: '' });
 
   const confirmOnSubmit = (e: React.SyntheticEvent) => {
@@ -17,15 +17,17 @@ const Upload = () => {
 
     // INFO: avoid type error. Types of property 'buttons' are incompatible.
     type UnionProp<T, KEY extends keyof T, TYPE> = { [P in keyof T]: P extends KEY ? T[P] | TYPE : T[P] };
-    type Custom = UnionProp<ReactConfirmAlertProps, 'buttons', any>;
+    type CustomConfirmAlertProps = UnionProp<ReactConfirmAlertProps, 'buttons', any>;
 
-    const props: Custom = {
+    const props: CustomConfirmAlertProps = {
       title: 'Upload phots?',
       message: 'Are you sure?',
       buttons: [
         {
           label: 'Yes',
           onClick: () => {
+            setIsLoading(true);
+
             const data = new FormData();
 
             images.map((image) => {
@@ -43,10 +45,11 @@ const Upload = () => {
                 if (data.error) {
                   setAlert({ type: 'alert-danger', message: data.error.message });
                 } else {
-                  console.log('ok');
+                  setIsLoading(false);
                 }
               })
               .catch((err) => {
+                setIsLoading(false);
                 console.log(err);
               });
           },
@@ -103,9 +106,16 @@ const Upload = () => {
 
           <br />
 
-          <button className='btn btn-primary d-grid gap-2 col-6 mx-auto' type='submit'>
-            UPLOAD
-          </button>
+          {isLoading ? (
+            <button className='btn btn-primary  gap-2 col-6 mx-auto' type='submit' disabled>
+              <span className='spinner-border spinner-border-sm' role='status' aria-hidden='true'></span>
+              UPLOADING...
+            </button>
+          ) : (
+            <button className='btn btn-primary d-grid gap-2 col-6 mx-auto' type='submit'>
+              UPLOAD
+            </button>
+          )}
         </form>
       </div>
     </>
