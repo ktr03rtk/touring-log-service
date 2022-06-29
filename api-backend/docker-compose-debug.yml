@@ -1,10 +1,9 @@
 services:
-  api_server:
+  api_backend:
     build:
       target: ${TARGET}
     volumes:
-      - ${PWD}/:/opt/todo
-      - ${PWD}/templates/:/opt/templates
+      - ${PWD}/:/opt/api_backend
     entrypoint: ${ENTRYPOINT}
     ports:
       - 2345:2345
