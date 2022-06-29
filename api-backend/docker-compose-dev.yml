@@ -1,0 +1,8 @@
+services:
+  api_server:
+    build:
+      target: ${TARGET}
+    volumes:
+      - ${PWD}/:/opt/todo
+      - ${PWD}/templates/:/opt/templates
+    entrypoint: ${ENTRYPOINT}
