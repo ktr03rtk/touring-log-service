@@ -12,6 +12,7 @@ services:
       DB_USERNAME: mysqluser
       DB_PASSWORD: mypassword
       DB_NAME: touring
+      JWT_SECRET: qb4W8N7KQ5NobrLpSnT4mjI5u7HjdbQd
     ports:
       - 8080:8080
     restart: always

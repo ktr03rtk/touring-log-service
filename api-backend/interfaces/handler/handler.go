@@ -9,6 +9,7 @@ import (
 	"github.com/ktr03rtk/touring-log-service/api-backend/usecase"
 
 	"github.com/julienschmidt/httprouter"
+	"github.com/justinas/alice"
 )
 
 type Handler interface {
@@ -16,13 +17,24 @@ type Handler interface {
 	Stop()
 }
 
+type config struct {
+	jwt struct {
+		secret string
+	}
+}
+
 type handler struct {
+	config config
 	userUsecase usecase.UserUsecase
 	server *http.Server
 }
 
-func NewHandler(uu usecase.UserUsecase) Handler {
+func NewHandler(secret string, uu usecase.UserUsecase) Handler {
+	var cfg config
+	cfg.jwt.secret = secret
+
 	h := &handler{
+		config: cfg,
 		userUsecase: uu,
 	}
 
@@ -50,8 +62,10 @@ func (h *handler) Stop() {
 
 func (h *handler) setupServer() {
 	router := httprouter.New()
+	_ = alice.New(h.checkToken)
 
-	router.POST("/v1/signup", h.signup)
+	router.HandlerFunc(http.MethodPost, "/v1/signup", h.signup)
+	router.HandlerFunc(http.MethodPost, "/v1/login", h.login)
 
 
 	h.server = &http.Server{
