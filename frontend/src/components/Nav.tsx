@@ -32,9 +32,13 @@ const Nav = ({ jwt, setJwt }: NavProperties) => {
       );
     } else {
       setLoginLink(
-        <Link to='/logout' className='nav-link' onClick={logout}>
-          Logout
-        </Link>,
+        <ul className='navbar-nav me-auto mb-2 mb-lg-0'>
+          <li className='nav-item'>
+            <Link to='/login' className='nav-link' onClick={logout}>
+              Logout
+            </Link>
+          </li>
+        </ul>,
       );
     }
   }, [jwt]);
@@ -63,11 +67,13 @@ const Nav = ({ jwt, setJwt }: NavProperties) => {
                 Home
               </Link>
             </li>
-            <li className='nav-item'>
-              <Link to='/upload' className='nav-link'>
-                Upload
-              </Link>
-            </li>
+            {jwt !== '' && (
+              <li className='nav-item'>
+                <Link to='/upload' className='nav-link'>
+                  Upload
+                </Link>
+              </li>
+            )}
           </ul>
           <div className='text-end'>{loginLink}</div>
         </div>

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Route, Routes, Link } from 'react-router-dom';
 
 import './App.css';
@@ -11,6 +11,19 @@ import Upload from './components/Upload';
 function App() {
   const [jwt, setJwt] = useState('');
 
+  const handleJWTChange = (token: string) => {
+    setJwt(token);
+  };
+
+  useEffect(() => {
+    const t = window.localStorage.getItem('jwt');
+    if (t) {
+      if (jwt === '') {
+        setJwt(JSON.parse(t));
+      }
+    }
+  }, []);
+
   return (
     <>
       <div className='container'>
@@ -19,9 +32,9 @@ function App() {
           <div className='col-md-10'>
             <Routes>
               <Route path='/' element={<Home />} />
-              <Route path='/upload' element={<Upload />} />
+              <Route path='/upload' element={<Upload jwt={jwt} />} />
               <Route path='/signup' element={<Signup />} />
-              <Route path='/login' element={<Login />} />
+              <Route path='/login' element={<Login handleJWTChange={handleJWTChange} />} />
               <Route path='*' element={<NoMatch />} />
             </Routes>
           </div>
