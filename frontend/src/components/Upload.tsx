@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { confirmAlert } from 'react-confirm-alert';
+import { useNavigate } from 'react-router-dom';
 
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import Alert from './Alert';
@@ -7,10 +8,22 @@ import Alert from './Alert';
 import type { AlertType } from '../types/Alert';
 import type { ReactConfirmAlertProps } from 'react-confirm-alert';
 
-const Upload = () => {
+type UploadProperties = {
+  jwt: string;
+};
+
+const Upload = ({ jwt }: UploadProperties) => {
   const [images, setImages] = useState<File[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [alert, setAlert] = useState<AlertType>({ type: 'd-none', message: '' });
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (jwt === '') {
+      navigate('/login');
+      return;
+    }
+  }, [jwt]);
 
   const confirmOnSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault();
