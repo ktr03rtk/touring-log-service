@@ -86,7 +86,7 @@ sql: set_db_host
 	mysql -h $(DB_HOST) -u $(DB_USERNAME) -p$(DB_PASSWORD) $(DB_NAME)
 
 sqldump: set_db_host
-	mysqldump -h $(DB_HOST) -u $(DB_USERNAME) -p$(DB_PASSWORD) --databases $(DB_NAME) > db/dump.sql
+	mysqldump --no-tablespaces -h $(DB_HOST) -u $(DB_USERNAME) -p$(DB_PASSWORD) --databases $(DB_NAME) > db/dump.sql
 
 drop_table: set_db_host
 	mysql -h $(DB_HOST) -u $(DB_USERNAME) -p$(DB_PASSWORD) $(DB_NAME) -e'SET FOREIGN_KEY_CHECKS = 0; DROP TABLE IF EXISTS photos; DROP TABLE IF EXISTS trips; DROP TABLE IF EXISTS users;'
