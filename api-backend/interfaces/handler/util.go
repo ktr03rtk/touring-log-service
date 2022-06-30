@@ -2,7 +2,13 @@ package handler
 
 import (
 	"encoding/json"
+	"errors"
 	"net/http"
+	"strconv"
+	"strings"
+	"time"
+
+	"github.com/pascaldekloe/jwt"
 )
 
 type jsonResp struct {
@@ -48,4 +54,61 @@ func (h *handler) errJSON(w http.ResponseWriter, err error, status ...int) {
 	theError := jsonError{Message: err.Error()}
 
 	h.writeJSON(w, statusCode, theError, "error")
+}
+
+func (h *handler) checkToken(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Add("Vary", "Authorization")
+
+		authHeader := r.Header.Get("Authorization")
+
+		if authHeader == "" {
+			h.errJSON(w, errors.New("invalid auth header"))
+
+			return
+		}
+
+		headerParts := strings.Split(authHeader, " ")
+		if len(headerParts) != 2 {
+			h.errJSON(w, errors.New("invalid auth header"))
+
+			return
+		}
+
+		if headerParts[0] != "Bearer" {
+			h.errJSON(w, errors.New("unauthorized - no bearer"))
+
+			return
+		}
+
+		token := headerParts[1]
+
+		claims, err := jwt.HMACCheck([]byte(token), []byte(h.config.jwt.secret))
+		if err != nil {
+			h.errJSON(w, errors.New("unauthorized - failed hmac check"), http.StatusForbidden)
+
+			return
+		}
+
+		if !claims.Valid(time.Now()) {
+			h.errJSON(w, errors.New("unauthorized - token expired"), http.StatusForbidden)
+
+			return
+		}
+
+		// TODO: fix
+		if !claims.AcceptAudience("my.example.com") {
+			h.errJSON(w, errors.New("unauthorized - invalid issuer"), http.StatusForbidden)
+
+			return
+		}
+
+		if _, err := strconv.ParseInt(claims.Subject, 10, 64); err != nil {
+			h.errJSON(w, errors.New("unauthorized"), http.StatusForbidden)
+
+			return
+		}
+
+		next.ServeHTTP(w, r)
+	})
 }

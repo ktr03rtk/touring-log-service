@@ -1,7 +1,7 @@
 package main
 
 import (
-	"fmt"
+	"errors"
 	"log"
 	"os"
 	"os/signal"
@@ -14,13 +14,32 @@ import (
 	"github.com/ktr03rtk/touring-log-service/api-backend/usecase"
 )
 
+var jwtSecret string
+
+func init() {
+	if err := getEnv(); err != nil {
+		log.Fatal(err)
+	}
+}
+
+func getEnv() error {
+	j, ok := os.LookupEnv("JWT_SECRET")
+	if !ok {
+		return errors.New("env JWT_SECRET is not found")
+	}
+
+	jwtSecret = j
+
+	return nil
+}
+
 func main() {
 	conn := config.NewDBConn()
 	userRepository := persistence.NewUserPersistence(conn)
 	userService := service.NewUService(userRepository)
 	userUsecase := usecase.NewUserUsecase(userRepository, userService)
 
-	h := handler.NewHandler(userUsecase)
+	h := handler.NewHandler(jwtSecret, userUsecase)
 
 	go func() {
 		h.Start()
