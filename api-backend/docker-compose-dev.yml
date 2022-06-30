@@ -1,0 +1,7 @@
+services:
+  api_backend:
+    build:
+      target: ${TARGET}
+    volumes:
+      - ${PWD}/:/opt/api_backend
+    entrypoint: ${ENTRYPOINT}

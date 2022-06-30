@@ -1,0 +1,9 @@
+services:
+  api_backend:
+    build:
+      target: ${TARGET}
+    volumes:
+      - ${PWD}/:/opt/api_backend
+    entrypoint: ${ENTRYPOINT}
+    ports:
+      - 2345:2345
