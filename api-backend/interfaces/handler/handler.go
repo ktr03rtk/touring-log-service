@@ -24,10 +24,10 @@ type config struct {
 }
 
 type handler struct {
-	config config
+	config       config
 	userUsecase  usecase.UserUsecase
 	photoUsecase usecase.PhotoStoreUsecase
-	server *http.Server
+	server       *http.Server
 }
 
 func NewHandler(secret string, uu usecase.UserUsecase, pu usecase.PhotoStoreUsecase) Handler {
@@ -35,7 +35,7 @@ func NewHandler(secret string, uu usecase.UserUsecase, pu usecase.PhotoStoreUsec
 	cfg.jwt.secret = secret
 
 	h := &handler{
-		config: cfg,
+		config:       cfg,
 		userUsecase:  uu,
 		photoUsecase: pu,
 	}
