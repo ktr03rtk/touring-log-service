@@ -13,6 +13,10 @@ services:
       DB_PASSWORD: mypassword
       DB_NAME: touring
       JWT_SECRET: qb4W8N7KQ5NobrLpSnT4mjI5u7HjdbQd
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+      REGION: ${REGION}
+      BUCKET: ${BUCKET}
     ports:
       - 8080:8080
     restart: always
