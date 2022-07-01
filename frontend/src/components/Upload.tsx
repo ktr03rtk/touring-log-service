@@ -15,6 +15,7 @@ type UploadProperties = {
 const Upload = ({ jwt }: UploadProperties) => {
   const [images, setImages] = useState<File[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isSelected, setIsSelected] = useState<boolean>(false);
   const [alert, setAlert] = useState<AlertType>({ type: 'd-none', message: '' });
   const navigate = useNavigate();
 
@@ -40,6 +41,8 @@ const Upload = ({ jwt }: UploadProperties) => {
           label: 'Yes',
           onClick: () => {
             setIsLoading(true);
+            const myHeaders = new Headers();
+            myHeaders.append('Authorization', 'Bearer ' + jwt);
 
             const data = new FormData();
 
@@ -50,6 +53,7 @@ const Upload = ({ jwt }: UploadProperties) => {
             const requestOptions = {
               method: 'POST',
               body: data,
+              headers: myHeaders,
             };
 
             // TODO: fix
@@ -59,6 +63,7 @@ const Upload = ({ jwt }: UploadProperties) => {
               .then((data) => {
                 if (data.error) {
                   setAlert({ type: 'alert-danger', message: data.error.message });
+                  setIsLoading(false);
                 } else {
                   setIsLoading(false);
                 }
@@ -79,8 +84,12 @@ const Upload = ({ jwt }: UploadProperties) => {
   };
 
   const handleOnAddImage = (e: any) => {
-    if (!e.target.files) return;
+    if (!e.target.files) {
+      setIsSelected(false);
+      return;
+    }
     setImages([...images, ...e.target.files]);
+    setIsSelected(true);
   };
 
   return (
@@ -127,7 +136,7 @@ const Upload = ({ jwt }: UploadProperties) => {
               UPLOADING...
             </button>
           ) : (
-            <button className='btn btn-primary  d-grid gap-2 col-6 mx-auto' type='submit'>
+            <button className='btn btn-primary  d-grid gap-2 col-6 mx-auto' type='submit' disabled={!isSelected}>
               UPLOAD
             </button>
           )}
