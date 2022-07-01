@@ -50,9 +50,7 @@ const Login = ({ handleJWTChange }: LoginProperties) => {
       headers: myHeaders,
     };
 
-    // TODO: fix
-    // fetch(`${process.env.REACT_APP_API_URL}/v1/login`, requestOptions)
-    fetch('http://192.168.10.104:8080/v1/login', requestOptions)
+    fetch(`${process.env.REACT_APP_API_URL}/v1/login`, requestOptions)
       .then((res) => res.json())
       .then((data) => {
         if (data.error) {

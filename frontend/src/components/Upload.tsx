@@ -56,9 +56,7 @@ const Upload = ({ jwt }: UploadProperties) => {
               headers: myHeaders,
             };
 
-            // TODO: fix
-            // fetch(`${process.env.REACT_APP_API_URL}/v1/upload`, requestOptions)
-            fetch('http://192.168.10.104:8080/v1/upload', requestOptions)
+            fetch(`${process.env.REACT_APP_API_URL}/v1/upload`, requestOptions)
               .then((res) => res.json())
               .then((data) => {
                 if (data.error) {
