@@ -11,7 +11,7 @@ import (
 )
 
 type PhotoStoreUsecase interface {
-	Execute(file *multipart.FileHeader, user_id, unit string) error
+	Execute(file *multipart.FileHeader, userID, unit string) error
 }
 
 type photoStoreUsecase struct {
@@ -26,7 +26,7 @@ func NewPhotoStoreUsecase(pmr repository.PhotoMetadataRepository, pir repository
 	}
 }
 
-func (pu *photoStoreUsecase) Execute(file *multipart.FileHeader, user_id, unit string) error {
+func (pu *photoStoreUsecase) Execute(file *multipart.FileHeader, userID, unit string) error {
 	src, err := file.Open()
 	if err != nil {
 		return errors.Wrapf(err, "failed to open file")
@@ -37,7 +37,7 @@ func (pu *photoStoreUsecase) Execute(file *multipart.FileHeader, user_id, unit s
 	reader := io.TeeReader(src, buf)
 
 	// consume reader to pass data to TeeReader
-	s3ObjectKey, err := storeMetadata(reader, user_id, unit, pu)
+	s3ObjectKey, err := storeMetadata(reader, userID, unit, pu)
 	if err != nil {
 		return err
 	}
@@ -49,7 +49,7 @@ func (pu *photoStoreUsecase) Execute(file *multipart.FileHeader, user_id, unit s
 	return nil
 }
 
-func storeMetadata(reader io.Reader, user_id string, unit string, pu *photoStoreUsecase) (s3ObjectKey string, err error) {
+func storeMetadata(reader io.Reader, userID string, unit string, pu *photoStoreUsecase) (s3ObjectKey string, err error) {
 	lat, lon, time, err := model.ExtractMetadata(reader)
 	if err != nil {
 		return "", err
@@ -57,7 +57,7 @@ func storeMetadata(reader io.Reader, user_id string, unit string, pu *photoStore
 
 	id := model.CreateUUID()
 
-	metadata, err := model.NewPhoto(model.PhotoID(id), time, lat, lon, model.UserID(user_id), unit)
+	metadata, err := model.NewPhoto(model.PhotoID(id), time, lat, lon, model.UserID(userID), unit)
 	if err != nil {
 		return "", err
 	}
