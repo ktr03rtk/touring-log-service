@@ -1,12 +1,14 @@
 package handler
 
 import (
+	"context"
 	"encoding/json"
 	"errors"
 	"net/http"
-	"strconv"
 	"strings"
 	"time"
+
+	"github.com/julienschmidt/httprouter"
 
 	"github.com/pascaldekloe/jwt"
 )
@@ -103,12 +105,36 @@ func (h *handler) checkToken(next http.Handler) http.Handler {
 			return
 		}
 
-		if _, err := strconv.ParseInt(claims.Subject, 10, 64); err != nil {
+		if claims.Subject == "" {
 			h.errJSON(w, errors.New("unauthorized"), http.StatusForbidden)
 
 			return
 		}
 
-		next.ServeHTTP(w, r)
+		ctx := context.WithValue(r.Context(), "id", claims.Subject)
+		ctx = context.WithValue(ctx, "unit", claims.Set["unit"])
+
+		next.ServeHTTP(w, r.WithContext(ctx))
 	})
+}
+
+func (h *handler) wrap(next http.Handler) httprouter.Handle {
+	return func(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+		ctx := context.WithValue(r.Context(), "params", ps)
+		next.ServeHTTP(w, r.WithContext(ctx))
+	}
+}
+
+func getAccountInfo(r *http.Request) (string, string, error) {
+	id, ok := r.Context().Value("id").(string)
+	if !ok {
+		return "", "", errors.New("failed to get context id")
+	}
+
+	unit, ok := r.Context().Value("unit").(string)
+	if !ok {
+		return "", "", errors.New("failed to get context unit")
+	}
+
+	return id, unit, nil
 }
