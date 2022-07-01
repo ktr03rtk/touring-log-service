@@ -14,7 +14,7 @@ import (
 
 type Handler interface {
 	Start()
-	Stop()
+	Stop(context.Context)
 }
 
 type config struct {
@@ -25,17 +25,19 @@ type config struct {
 
 type handler struct {
 	config config
-	userUsecase usecase.UserUsecase
+	userUsecase  usecase.UserUsecase
+	photoUsecase usecase.PhotoStoreUsecase
 	server *http.Server
 }
 
-func NewHandler(secret string, uu usecase.UserUsecase) Handler {
+func NewHandler(secret string, uu usecase.UserUsecase, pu usecase.PhotoStoreUsecase) Handler {
 	var cfg config
 	cfg.jwt.secret = secret
 
 	h := &handler{
 		config: cfg,
-		userUsecase: uu,
+		userUsecase:  uu,
+		photoUsecase: pu,
 	}
 
 	h.setupServer()
@@ -49,8 +51,8 @@ func (h *handler) Start() {
 	}
 }
 
-func (h *handler) Stop() {
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+func (h *handler) Stop(ctxParent context.Context) {
+	ctx, cancel := context.WithTimeout(ctxParent, 10*time.Second)
 	defer cancel()
 
 	if err := h.server.Shutdown(ctx); err != nil {
@@ -62,11 +64,12 @@ func (h *handler) Stop() {
 
 func (h *handler) setupServer() {
 	router := httprouter.New()
-	_ = alice.New(h.checkToken)
+	secure := alice.New(h.checkToken)
 
 	router.HandlerFunc(http.MethodPost, "/v1/signup", h.signup)
 	router.HandlerFunc(http.MethodPost, "/v1/login", h.login)
 
+	router.POST("/v1/upload", h.wrap(secure.ThenFunc(h.upload)))
 
 	h.server = &http.Server{
 		Handler: h.enableCORS(router),
