@@ -37,10 +37,10 @@ const (
 )
 
 // example key: touring-log/photo/thing=thingName/year=2022/month=01/day=12/1656422254000.gz.
-var keyValidator = regexp.MustCompile(`^touring-log/photo/thing=.+/year=\d{4}/month=[01][0-9]/day=[0-2][0-9]/\d{13}.gz$`)
+var keyValidator = regexp.MustCompile(`^touring-log/photo/thing=.+/year=\d{4}/month=[01][0-9]/day=[0-2][0-9]/\d{13}.jpeg.gz$`)
 
 func NewPhoto(id PhotoID, time time.Time, lat, lon float64, user_id UserID, unit string) (*Photo, error) {
-	key := fmt.Sprintf("%s/thing=%s/year=%d/month=%02d/day=%02d/%s.gz", S3_KEY_PREFIX, unit, time.Year(), time.Month(), time.Day(), strconv.Itoa(int(time.UnixMilli())))
+	key := fmt.Sprintf("%s/thing=%s/year=%d/month=%02d/day=%02d/%s.jpeg.gz", S3_KEY_PREFIX, unit, time.Year(), time.Month(), time.Day(), strconv.Itoa(int(time.UnixMilli())))
 
 	data := &Photo{
 		ID:          id,

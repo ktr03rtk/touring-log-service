@@ -30,14 +30,14 @@ func TestNewPhoto(t *testing.T) {
 			"normal case",
 			35.470403,
 			139.625228,
-			&Photo{ID: id, Year: year, Month: month, Day: day, Lat: 35.470403, Lon: 139.625228, Timestamp: time, S3ObjectKey: "touring-log/photo/thing=edge/year=2022/month=01/day=25/1643073010000.gz", UserID: userID},
+			&Photo{ID: id, Year: year, Month: month, Day: day, Lat: 35.470403, Lon: 139.625228, Timestamp: time, S3ObjectKey: "touring-log/photo/thing=edge/year=2022/month=01/day=25/1643073010000.jpeg.gz", UserID: userID},
 			nil,
 		},
 		{
 			"normal case: negative gps value",
 			-35.470403,
 			-139.625228,
-			&Photo{ID: id, Year: year, Month: month, Day: day, Lat: -35.470403, Lon: -139.625228, Timestamp: time, S3ObjectKey: "touring-log/photo/thing=edge/year=2022/month=01/day=25/1643073010000.gz", UserID: userID},
+			&Photo{ID: id, Year: year, Month: month, Day: day, Lat: -35.470403, Lon: -139.625228, Timestamp: time, S3ObjectKey: "touring-log/photo/thing=edge/year=2022/month=01/day=25/1643073010000.jpeg.gz", UserID: userID},
 			nil,
 		},
 		{
