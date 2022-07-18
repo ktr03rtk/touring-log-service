@@ -81,7 +81,7 @@ const Upload = ({ jwt }: UploadProperties) => {
     confirmAlert(props);
   };
 
-  const handleOnAddImage = (e: any) => {
+  const handleOnAddImage = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) {
       setIsSelected(false);
       return;
