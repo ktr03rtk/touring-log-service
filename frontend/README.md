@@ -2,7 +2,7 @@
 
 ## Purpose
 
-The frontend server pod is react application react web application server.
+The frontend server pod is a react application react web application server.
 User can upload photo, and view the touring log and related photo on map.
 
 ## Available Scripts
