@@ -94,7 +94,7 @@ spec:
                   name: web-credential
                   key: s3_bucket
             - name: VERSION
-              value: latest
+              value: v0.0.6
       containers:
         - image: nginx:alpine
           name: web-app
