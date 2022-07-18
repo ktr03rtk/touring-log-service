@@ -1,0 +1,137 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  creationTimestamp: null
+  name: web
+spec: {}
+status: {}
+
+---
+apiVersion: bitnami.com/v1alpha1
+kind: SealedSecret
+metadata:
+  creationTimestamp: null
+  name: web-credential
+  namespace: web
+spec:
+  encryptedData:
+    access_key_id: AgAaHBJmXQei4f3unN0vnUei7C95U4pFR+ApsHWTHfSWk3xPhpx8qNBBIIFcCGgk0N16bhfmIMp5s91DbXfhT1rW2HvHB6TRLqGk1jyfbJ3R/gJntyy/uo7D7ew4DvnKmHAq1yOAm9ylkQmUOCV6HZORQhhwkIdJEF7Gj7p5c/NK2xd+g/WE+fO0Z4ntCoZFhdRRHtqwfn804yZMkEKDJu4blRCn6ysywntVo4MW7ca9jDQUw6iG1bZS6n4ceCH6VQ8ieJb9uAiYIDXOxmlpgoMhv20nS+3kabKU2azJI8jJYcSMh5L0Gtg8pmp/ALXLFnyTJ3qS6xyp7igMRzCj2pYYwySmhzqQPw2FCfZ971D7MNzQjkc+shXR0t76GuYLBXsL/tGQGoLKmKm4L+kY2MH8PuxVrQLuojxpQK8EC7V4We5p9kqkmw9ztFHqOLAO/gFztlII4q1yJ0hgeiNh5GvkY0W8N+t8GH0cwv/k2szjDAMtVI4D+Dx+FmwUI12ySCiVQI8tv29BEJve10fHVthzJ1xbAFhF9jjmzGNgqXSRGA2IfHkcjWyWtuITycHYGhrwFk3ML/ni0bk3NFIrbUik2mEtubcCyW1N5LbIsOEAGy9dtcBpIXf1l1SA/uL3FKFm88AmTw0jXj3JCYQjtg0C/B7oIch79yLpwQNETT/Nrh7DyyQciy47H3V3ePtHq4mqJv07NQmRFhgoOsvmOYAwG3H5Fg==
+    s3_bucket: AgC5c8nIhrvT07M8ITQfliF7uva0ijZyLw/ZzmnXfEERmUyZsVrryphO6WJGcaN8ilU+OoGzYmQmNSrL52781fgcFwiDHV/NtkI0/HzsiR7aP8AX7+FsU92oXrpbYuI1Q0FWKRIQwRogJanzKwJKfthvCZTb3pqQ4E4UEfxzHkUHGssG+Tej03WB0q2LcSPGL+BQLqE8ekohYMLmQxgWwNKjqzkF2bE3GPvQPnIoFixhOjebyOhoupa21GeE6CvGSm5pkwAro/p7Nnu0SQ0gPGqhvG1sNOXAvc1js0JAM/Wt09nyZ3CjZCcEQ0Xb6Qwi47rYq5STFaZG4u++Io+o91B4Z5rOY84uJatm2Z5deBQPiTNIroNUMFDEp9wuwrJpPI596AVBEmqYVie0vbBQK7wdhz+2qBCFgD1pn+2aFNAzsOYTZWu0Wg3MGMa9PwZB/QaEoH66/lIpU/i9bi5y191xsXzfZ4wbinXLXp9qMcsNWuoJcka6FRm66LAiEH/DXWEbQ6puZJS45LuH3wzSoA4WKWYpMY8Fh40RKJTjsZnZEsSw6FuH5HGffUpfdRWNYQ2maFyNUaHh9KW546uFajAJmZODm94PMZ2SKxPom+ak5jT0Zkwd0gCaFujoJSaANLlnRRH8eSuNin6dtCQD6VvM/+f3i5qJ01Zk/Auz66xD8taINJtUoFG1ymKzti5LBAh3mHL52wZ96IFzhMABjvgNhaph96I9f+OCek8PKqbuv72zbnn38w==
+    secret_access_key: AgCg26+VXTDNvDRJeY8rhqY+9/TXKVTRrNSMo/cYXa0WLR7qW6Ndxcyx1Xr3hmM+7a+t0R07wRFiC92L5iEm6EMp9RFceDMFRn8EO5Sm4s16nWtWnG7Qr0yUP/sdTp924HasvhKVPODnrkACHCZk4pgNAzki50v3Mdrn40Ht+8lcaBIdCQHoecL/4vuxmR1RN2qrmMtSnq9pnYf/lVVdS/eX3c72BAyQHGDi0Vz172b7qFOuhfb8NmYa1FeLnidIyK3UjOkIs79vBs6dNQy1vSKIJNqgzNynysuw/Hadsk/Tx/LILDj3jY4B/HYx1SiMDKl4I/TAh2jqmIGLPUbLeSXWBGif7cp49a9RziHm4ahPTIVyxd8b+klhVP+sHC9gPmg+YGHmFqCe+u1sjzwcEKAxfK+er2OnmBLnT9tKrRAJXna2xp+paIhPkjOZbSuqI1CHamKV2Isv6wlPcOPzZQV3BVCQxdngwserDCfAbHoiD20ZzEfvQkEPzDpiVDfZ0O+RKMzdHKowTKCmkwypcNIUyoYr5kdOfefxFozI9dtkAoMkEcrZHmkJ1wlPYd6l+9wymiEz4TnX7NVc+GnjQKSt1l9NdpVXEnXwGsV8Eu5WAHVvdt8t8OG+7dQEFioCdsdJ7X5gjQLO9FpzhD1tEc9Wqu+h0nCBi2uec2DPcbkP2o8TlYqtQY4eYOLgyHKRrhTxR/65obiy0ZMRgHAdoB7ByUYFPqvU7WBgvufaydfEzP8459oeRLC7
+  template:
+    data: null
+    metadata:
+      creationTimestamp: null
+      name: web-credential
+      namespace: web
+
+---
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: nginx-conf
+  namespace: web
+data:
+  nginx.conf: |
+    server {
+      listen 80;
+      access_log /var/log/nginx/access_log main;
+      error_log /var/log/nginx/error_log;
+      location / {
+        root   /var/www/touring-log/build;
+        index  index.html index.htm;
+        try_files $uri $uri/ /index.html;
+      }
+    }
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: web-app
+  name: web-app
+  namespace: web
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: web-app
+  template:
+    metadata:
+      labels:
+        app: web-app
+    spec:
+      initContainers:
+        - image: amazon/aws-cli:latest
+          name: pull-artifacts
+          command:
+            [
+              "sh",
+              "-c",
+              "aws s3 cp ${S3_BUCKET}/artifacts/${VERSION}/build/ /build-artifacts --recursive",
+            ]
+          volumeMounts:
+            - mountPath: /build-artifacts
+              name: build-artifacts
+          env:
+            - name: AWS_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: web-credential
+                  key: access_key_id
+            - name: AWS_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: web-credential
+                  key: secret_access_key
+            - name: REGION
+              value: ap-northeast-1
+            - name: S3_BUCKET
+              valueFrom:
+                secretKeyRef:
+                  name: web-credential
+                  key: s3_bucket
+            - name: VERSION
+              value: latest
+      containers:
+        - image: nginx:alpine
+          name: web-app
+          volumeMounts:
+            - mountPath: /etc/nginx/conf.d
+              name: nginx-conf
+              readOnly: true
+            - mountPath: /var/www/touring-log/build
+              name: build-artifacts
+              readOnly: true
+      volumes:
+        - name: nginx-conf
+          configMap:
+            name: nginx-conf
+            items:
+              - key: nginx.conf
+                path: nginx.conf
+        - name: build-artifacts
+          emptyDir: {}
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: web-app
+  name: web-app
+  namespace: web
+spec:
+  ports:
+    - nodePort: 30080
+      port: 80
+      protocol: TCP
+      targetPort: 80
+  selector:
+    app: web-app
+  type: NodePort
+status:
+  loadBalancer: {}
