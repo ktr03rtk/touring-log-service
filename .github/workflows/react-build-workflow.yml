@@ -1,0 +1,54 @@
+name: Build and push and Trivy scan for react app
+# push to private registry because of secret
+
+on:
+  workflow_call:
+    inputs:
+      targetDir:
+        required: true
+        type: string
+      tag:
+        required: true
+        type: string
+    secrets:
+      REACT_APP_API_URL:
+        required: true
+      AWS_ROLE_ARN:
+        required: true
+      S3_BUCKET:
+        required: true
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  build-and-push-image:
+    runs-on: ubuntu-20.04
+    env:
+      TZ: Asia/Tokyo
+      REACT_APP_API_URL: ${{ secrets.REACT_APP_API_URL }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: v18
+
+    - name: build react app
+      run: |
+        npm ci
+        npm run build
+      # env:
+      #   CI: false
+
+    - name: Set up AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+        aws-region: ap-northeast-1
+
+    - name: Upload artifacts to S3
+      run: aws s3 cp ./build s3://${{ secret.S3_BUCKET }}/artifacts/web/${{ inputs.tag }}/ --recursive

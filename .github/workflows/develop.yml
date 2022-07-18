@@ -1,0 +1,18 @@
+name: dev build for react app
+
+pull_request:
+  branches:
+    - main
+  paths:
+    - "frontend/**"
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  build
+    uses: ./.github/workflows/react-build-workflow.yml
+    with:
+      targetDir: frontend
+      tag: latest
