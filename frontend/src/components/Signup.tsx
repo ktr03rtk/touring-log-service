@@ -51,9 +51,7 @@ const Signup = () => {
       headers: myHeaders,
     };
 
-    // TODO: fix
-    // fetch(`${process.env.REACT_APP_API_URL}/v1/signup`, requestOptions)
-    fetch('http://192.168.10.104:8080/v1/signup', requestOptions)
+    fetch(`${process.env.REACT_APP_API_URL}/v1/signup`, requestOptions)
       .then((res) => res.json())
       .then((data) => {
         if (data.error) {

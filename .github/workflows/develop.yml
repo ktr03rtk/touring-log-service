@@ -1,0 +1,22 @@
+name: dev build for react app
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "frontend/**"
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  build:
+    uses: ./.github/workflows/react-build-workflow.yml
+    with:
+      tag: latest
+    secrets:
+      REACT_APP_API_URL: ${{ secrets.REACT_APP_API_URL }}
+      AWS_ROLE_ARN: ${{ secrets.AWS_ROLE_ARN }}
+      S3_BUCKET: ${{ secrets.S3_BUCKET }}
