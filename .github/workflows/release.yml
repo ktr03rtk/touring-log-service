@@ -8,6 +8,7 @@ on:
 permissions:
   contents: read
   packages: write
+  id-token: write
 
 jobs:
   build_and_push_vpn_client:
@@ -27,3 +28,12 @@ jobs:
     with:
       targetDir: data-store
       tag: ${{ github.ref_name }}
+
+  build_and_upload_frontend:
+    uses: ./.github/workflows/react-build-workflow.yml
+    with:
+      tag: latest
+    secrets:
+      REACT_APP_API_URL: ${{ secrets.REACT_APP_API_URL }}
+      AWS_ROLE_ARN: ${{ secrets.AWS_ROLE_ARN }}
+      S3_BUCKET: ${{ secrets.S3_BUCKET }}

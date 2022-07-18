@@ -1,46 +1,54 @@
-# Getting Started with Create React App
+# frontend
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Purpose
+
+The frontend server pod is a react application react web application server.
+User can upload photo, and view the touring log and related photo on map.
 
 ## Available Scripts
 
-In the project directory, you can run:
+For development.
 
-### `npm start`
+```
+npm start
+```
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+For production build.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+```
+npm run build
+```
 
-### `npm test`
+## Initialization
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Create sealed secret manifest of AWS credential
 
-### `npm run build`
+Store credential to file.
+Then, Remove command history from `~/.bash_history`.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```bash
+echo -n 'foo' > access_key_id.txt
+echo -n 'bar' > secret_access_key.txt
+echo -n 'baz' > s3_bucket.txt
+```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Install kubeseal cli and create controller resource. [github](https://github.com/bitnami-labs/sealed-secrets)
+Create sealed secret manifest from certificate.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```bash
+kubectl create secret -n web generic web-credential \
+  --from-file=access_key_id=./access_key_id.txt \
+  --from-file=secret_access_key=./secret_access_key.txt \
+  --from-file=s3_bucket=./s3_bucket.txt \
+  -o yaml --dry-run=client >secret1.yml
+kubeseal -o yaml <secret1.yml >sealedsecret1.yml
+rm secret1.yml access_key_id.txt secret_access_key.txt s3_bucket.txt
+```
 
-### `npm run eject`
+## Copy sealed secret manifest to web manifest
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+Copy sealed secret manifest to the part of web_server.yml.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Usage
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+Apply web_server.yml.
