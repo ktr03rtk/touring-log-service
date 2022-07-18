@@ -70,7 +70,7 @@ spec:
             [
               "sh",
               "-c",
-              "aws s3 cp ${S3_BUCKET}/artifacts/${VERSION}/build/ /build-artifacts --recursive",
+              "aws s3 cp ${S3_BUCKET}/artifacts/web/${VERSION}/ /build-artifacts --recursive",
             ]
           volumeMounts:
             - mountPath: /build-artifacts
