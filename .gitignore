@@ -55,6 +55,7 @@ override.tf.json
 
 # db
 */db/mysql_data/*
+*/db/tmp
 
 dump.sql
 cover.out.tmp
