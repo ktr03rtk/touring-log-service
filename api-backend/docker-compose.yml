@@ -12,7 +12,7 @@ services:
       DB_USERNAME: mysqluser
       DB_PASSWORD: mypassword
       DB_NAME: touring
-      JWT_SECRET: qb4W8N7KQ5NobrLpSnT4mjI5u7HjdbQd
+      JWT_SECRET: ${JWT_SECRET}
       AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
       AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
       REGION: ${REGION}
