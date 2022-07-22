@@ -12,7 +12,7 @@ services:
       DB_USERNAME: mysqluser
       DB_PASSWORD: mypassword
       DB_NAME: touring
-      JWT_SECRET: qb4W8N7KQ5NobrLpSnT4mjI5u7HjdbQd
+      JWT_SECRET: ${JWT_SECRET}
       AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
       AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
       REGION: ${REGION}
@@ -23,10 +23,11 @@ services:
 
   db:
     container_name: db
-    image: mysql/mysql-server:5.7
+    image: mysql/mysql-server:8.0.29
     volumes:
-      - ./db/mysql_data:/var/lib/mysql
-      - ./db/my.cnf:/etc/mysql/conf.d/my.cnf
+      - db-store:/var/lib/mysql
+      - ./db/tmp/log:/var/log/mysql
+      - ./db/cnf/my.cnf:/etc/my.cnf
     environment:
       # allow access from hosts out of container
       # https://dev.mysql.com/doc/refman/8.0/en/docker-mysql-more-topics.html#docker_var_mysql-root-host
@@ -36,6 +37,10 @@ services:
       MYSQL_PASSWORD: mypassword
       MYSQL_DATABASE: touring
       MYSQL_ROOT_PASSWORD: password
+      MYSQL_ALLOW_EMPTY_PASSWORD: yes
       TZ: Asia/Tokyo
     ports:
       - 3306:3306
+
+volumes:
+  db-store:

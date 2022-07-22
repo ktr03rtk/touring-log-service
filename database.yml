@@ -1,0 +1,257 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  creationTimestamp: null
+  name: database
+spec: {}
+status: {}
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mysql
+  namespace: database
+data:
+  my.cnf: |
+    # Apply this config only on the primary.
+    [mysqld]
+    default_authentication_plugin=mysql_native_password
+    character-set-server=utf8mb4
+    collation-server=utf8mb4_unicode_ci
+    log-error=/var/log/mysql/mysql-error.log
+    general_log=1
+    general_log_file=/var/log/mysql/mysql-query.log
+    skip-host-cache
+    skip-name-resolve
+    datadir=/var/lib/mysql
+    socket=/var/lib/mysql/mysql.sock
+    secure-file-priv=/var/lib/mysql-files
+    pid-file=/var/run/mysqld/mysqld.pid
+
+    [mysql]
+    default-character-set=utf8mb4
+
+    [client]
+    default-character-set=utf8mb4
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: migration
+  namespace: database
+data:
+  createdb.sql: |
+    CREATE TABLE IF NOT EXISTS touring.users(
+      id CHAR(36) NOT NULL PRIMARY KEY,
+      email VARCHAR (255) NOT NULL UNIQUE,
+      password VARCHAR (255) NOT NULL,
+      unit VARCHAR (255) NOT NULL UNIQUE
+    ) ENGINE=INNODB DEFAULT CHARSET=utf8;
+    CREATE TABLE IF NOT EXISTS touring.trips(
+      id CHAR(36) NOT NULL PRIMARY KEY,
+      year TINYINT UNSIGNED NOT NULL,
+      month TINYINT UNSIGNED NOT NULL,
+      day TINYINT UNSIGNED NOT NULL,
+      user_id CHAR(36) NOT NULL,
+      INDEX idx_trips_userid_year (user_id, year),
+      INDEX idx_trips_userid_year_month (user_id, year, month),
+      CONSTRAINT fk_trips_user_id FOREIGN KEY (user_id) REFERENCES users(id)
+    ) ENGINE=INNODB DEFAULT CHARSET=utf8;
+    CREATE TABLE IF NOT EXISTS touring.photos(
+      id CHAR(36) NOT NULL PRIMARY KEY,
+      year SMALLINT UNSIGNED NOT NULL,
+      month TINYINT UNSIGNED NOT NULL,
+      day TINYINT UNSIGNED NOT NULL,
+      lat DECIMAL(8, 6) NOT NULL,
+      lon DECIMAL(9, 6) NOT NULL,
+      timestamp TIME NOT NULL,
+      s3_object_key VARCHAR(256) NOT NULL,
+      user_id CHAR(36) NOT NULL,
+      INDEX idx_photos_userid_year (user_id, year),
+      INDEX idx_photos_userid_year_month (user_id, year, month),
+      CONSTRAINT fk_photos_user_id FOREIGN KEY (user_id) REFERENCES users(id)
+    ) ENGINE=INNODB DEFAULT CHARSET=utf8;
+
+---
+apiVersion: bitnami.com/v1alpha1
+kind: SealedSecret
+metadata:
+  creationTimestamp: null
+  name: mysql-secrets
+  namespace: database
+spec:
+  encryptedData:
+    mysql_password: AgA8/ztOpPKYjiafiBJtpYvBljuSrrsyioxGl7cCfotCy6MqCxBVDSmPn96SbH/FUjMTZyLP60+5YAH4vlh8CwF6YWH8GbrYiWmB7DonNMc2ViXh9wS7xTlCLvZqu3GqHbbK/LNx9sNMzrvMjo9r8Z3grhM60T/j8YjdGxBDJJsRBWWqWfhG6drEVqNeRwJ5cvU1OSYcfp0mv7UxlykuTxp03UuiTqEiXex67+/I8+NIemc/UgRc0Wf/BnIC5mWS8gnEdDN2J1clRAYvhjEXLFjz74Blg0xPsvDJlQKqFFKVeXsqTrhCc+H8TLC7/l7ElgroQGQq7OIho1AcwKorL4HLO1L9C897xkza5qsJ72TyZpBG5UPo5a+APBJ9ytW27Bkn1DFDEnhBow1J62M4nj5wr2W+q2f8xq/qMDhFG522+yTxjN9CNEtfjs5BqJ2M5t8oS53JK+yzUp50SfcwTdpJB+IEnDfH9Khd51Vm9FzWHV1zQBQ7tiU2dlNt0zB7plrMf+zfRoLSU3RO7o1Ku11dkyvFGS9LlGIKZo/ECdIs+h8NW++zT+YqjnaLDrEGijfGwpCTkON6WgBRTjwwKWJO2HATO8u92tlfRe37LQyvBQt9CUFLkhlLbpXld6LzDhBAvM7KXM+eOsBL/4Kme9cyOXzJv17ZJQbnE6jI2kyOqpGyeEfjb9/U5nYZz6IiWaEqaVw3pAuctG8qOlVIEXYdL0ykvhE=
+    mysql_root_password: AgALhi6leZeo37iKX1r5JRdfCcqo63Oks8y+g6+rvU+dfyHI2iZUnVUErGrjEzSs3P12l2VONm3sQ7BjIS6uAwGGUsubIHioEAkd1W1Cr0inZnNnuF1Q/xJjtNVpwar9TCYjQClDW3YkX4ERQKRmb+VwjhV7uBquiNlfDj9tftXMLTdTniWkWY/gh0S+yi9QDD5kOYXgCjYhQx7cUQejBndOTiGVLiG0F8XPgAHZ1XDC/nYIe7F2vbqpAgYi7EZ8rEAIqc0NXMWCnumL+0dS5jhzOLi5Fpmzo1UOb+awj0PxJwa61F04GRCDjJ+zXSFUQ3JTtI8YaMVAB/ItCAXRa5+MQ1QdFuKYbnOcRcPt+4mH3jSDK33UvX0CUe/9Xu1aYC7IKTZSofKzBB8KwZfgcSM8RMqxWRq/frFQySV8XjdyRwDL1Wo0R48vMVZD+Olg+dmH6cnb/YB45T6bof5K4c8Rrht1JXwux+6cIGJB1xS3XuZzVe67Lzg4MftAykF73El/8w42NW/ETx9X59MgOp4heXNhnZxIe4WJ38nX9GLBPn1/RBAB4VtI55hmYTDa3HHK2O4K8uCJE0ecR22GmUKdEHWluRySMZ2umyg7irvf85PQouMd3KxT/TJtOzEX5L86rd0iMoE6R4L/1Au4EHO4aEIYYfz2eZRBO9dVy6VgFDsFymc+Cd9nhg4fvmfZHW3dcIwWAUyabfAbz/Gq9qF1S76Za48=
+    mysql_user: AgBRJqVgyYdan2KP4V54yK1bqIDsqv0S9Zq4V6u+jG/84BiIcgqJdvc3kD9RMX4C1himGHTGH5pxPhsglViZlYyueGtt9Nv1KzHrYcdX5cZPR69EFNzUfGNGxXh+XadoU+y3okRwHIjDfWiPEN1KbBbPIsRZB6CmVId3EJcRi3iWE2xHgakC/cTK6to/D/vNd9L+DBJszNl9zQIk0cBk2qgBv0aFYjORm140xrYurAC41aJ6q03VMT+yHFp4b2rgkmum8wyYF9eQ17nXfeX86KxxJS3sKHnv6zoOFAl7UaSCDMvBKJvr2gNMG6KpQlcJFjL+5mzs42/MSHWOhCee6yo5spXtiw1es22dxeP8OLPFf1X+xh9lIW4snA9TTWsR68sUkIA5XRGxdQTPmQNvV0G0MZFpl4hOi+gM6o/hnaudjfJG9jIP2dUEjGJBhRBHsL+mOTCSYdV/dSrcdeaDeBTr1q2HT8CIYCHyTFWnSMYejgx6oHXyufWzDPY5/DDMASlR53IR5npw8MDzsBx53fFUJzzbushvi/k3MFTNdfb1IA/XYnpRemC1PHroQsLjsw/d6NgP5GdkvaWg89c+arF7HDMjYGXnQWu5wTmAqTVVwAqY2V4in8FC7C0lKWrEWqN6DeiBGuWsxFtwvWN3BcRv0PUoyZQY8/X2NhUw05i1VFzpfqnYqFevgKEr7biPsQS4RK4fFQaK30M=
+  template:
+    data: null
+    metadata:
+      creationTimestamp: null
+      name: mysql-secrets
+      namespace: database
+
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: mysql
+  namespace: database
+spec:
+  selector:
+    matchLabels:
+      app: mysql
+  serviceName: mysql
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: mysql
+    spec:
+      initContainers:
+        - name: init-mysql
+          image: mysql/mysql-server:8.0.29
+          command:
+            - bash
+            - "-c"
+            - |
+              set -ex
+              echo [client] > /etc/sql/sql.cnf
+              echo user=$MYSQL_USER >> /etc/sql/sql.cnf
+              echo password=$MYSQL_PASSWORD >> /etc/sql/sql.cnf
+              echo host=mysql.database.svc.cluster.local >> /etc/sql/sql.cnf
+          env:
+            - name: MYSQL_USER
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-secrets
+                  key: mysql_user
+            - name: MYSQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-secrets
+                  key: mysql_password
+          volumeMounts:
+            - name: sqlcnf
+              mountPath: /etc/sql
+      containers:
+        - name: mysql
+          image: mysql/mysql-server:8.0.29
+          env:
+            - name: MYSQL_DATABASE
+              value: touring
+            - name: MYSQL_ROOT_HOST
+              value: "%"
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-secrets
+                  key: mysql_root_password
+            - name: MYSQL_USER
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-secrets
+                  key: mysql_user
+            - name: MYSQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-secrets
+                  key: mysql_password
+            - name: MYSQL_ALLOW_EMPTY_PASSWORD
+              value: "yes"
+            - name: TZ
+              value: Asia/Tokyo
+          ports:
+            - name: mysql
+              containerPort: 3306
+          volumeMounts:
+            - name: data
+              mountPath: /var/lib/mysql
+              subPath: mysql
+            - name: sqlcnf
+              mountPath: /etc/sql
+            - name: mycnf
+              mountPath: /etc/mysql/conf.d
+          livenessProbe:
+            exec:
+              command: ["mysqladmin", "ping"]
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+          readinessProbe:
+            exec:
+              # Check we can execute queries over TCP (skip-networking is off).
+              command:
+                [
+                  "mysql",
+                  "--defaults-extra-file=/etc/sql/sql.cnf",
+                  "-h",
+                  "127.0.0.1",
+                  "-e",
+                  "SELECT 1",
+                ]
+            initialDelaySeconds: 5
+            periodSeconds: 2
+      volumes:
+        - name: data
+          hostPath:
+            path: /var/mysqldata
+        - name: sqlcnf
+          hostPath:
+            path: /var/sql
+        - name: mycnf
+          configMap:
+            name: mysql
+
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: mysql
+  namespace: database
+spec:
+  template:
+    spec:
+      containers:
+        - name: migration
+          image: mysql/mysql-server:8.0.29
+          command:
+            [
+              "/bin/sh",
+              "-c",
+              "sleep 60 && mysql --defaults-extra-file=/etc/sql/sql.cnf < /etc/migration/createdb.sql",
+            ]
+          volumeMounts:
+            - name: migration
+              mountPath: /etc/migration
+            - name: sqlcnf
+              mountPath: /etc/sql
+      restartPolicy: Never
+      volumes:
+        - name: migration
+          configMap:
+            name: migration
+        - name: sqlcnf
+          hostPath:
+            path: /var/sql
+  backoffLimit: 20
+
+---
+# TODO: Generate job container in same pod with mysql. Because sharing hostPath resources.
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql
+  labels:
+    app: mysql
+  namespace: database
+spec:
+  ports:
+    - name: mysql
+      port: 3306
+      targetPort: 3306
+  type: ClusterIP
+  selector:
+    app: mysql

@@ -20,7 +20,6 @@ RUN go mod download \
   && apk --no-cache add make alpine-sdk mysql-client
 
 COPY ./ ./
-COPY ./templates /opt/templates
 RUN CGO_ENABLED=0 go build -o server
 
 CMD ["/bin/sh"]
@@ -48,7 +47,6 @@ RUN go mod download \
   && CGO_ENABLED=0 go install github.com/go-delve/delve/cmd/dlv@latest
 
 COPY ./ ./
-COPY ./templates /opt/templates
 RUN go build -gcflags "all=-N -l" -o debug_app
 
 EXPOSE 8080 2345
@@ -68,7 +66,6 @@ RUN apk --no-cache add tzdata && \
   apk del tzdata
 
 COPY --from=build-stage /opt/api_backend/server /usr/bin/server
-COPY ./templates /opt/templates
 
 EXPOSE 8080
 
