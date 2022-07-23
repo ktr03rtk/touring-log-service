@@ -32,7 +32,7 @@ jobs:
   build_and_upload_frontend:
     uses: ./.github/workflows/react-build-workflow.yml
     with:
-      tag: latest
+      tag: ${{ github.ref_name }}
     secrets:
       REACT_APP_API_URL: ${{ secrets.REACT_APP_API_URL }}
       AWS_ROLE_ARN: ${{ secrets.AWS_ROLE_ARN }}
