@@ -27,10 +27,11 @@ type handler struct {
 	config       config
 	userUsecase  usecase.UserUsecase
 	photoUsecase usecase.PhotoStoreUsecase
+	tripUsecase  usecase.TripStoreUsecase
 	server       *http.Server
 }
 
-func NewHandler(secret string, uu usecase.UserUsecase, pu usecase.PhotoStoreUsecase) Handler {
+func NewHandler(secret string, uu usecase.UserUsecase, pu usecase.PhotoStoreUsecase, tu usecase.TripStoreUsecase) Handler {
 	var cfg config
 	cfg.jwt.secret = secret
 
@@ -38,6 +39,7 @@ func NewHandler(secret string, uu usecase.UserUsecase, pu usecase.PhotoStoreUsec
 		config:       cfg,
 		userUsecase:  uu,
 		photoUsecase: pu,
+		tripUsecase:  tu,
 	}
 
 	h.setupServer()
@@ -69,7 +71,8 @@ func (h *handler) setupServer() {
 	router.HandlerFunc(http.MethodPost, "/v1/signup", h.signup)
 	router.HandlerFunc(http.MethodPost, "/v1/login", h.login)
 
-	router.POST("/v1/upload", h.wrap(secure.ThenFunc(h.upload)))
+	router.POST("/v1/photos", h.wrap(secure.ThenFunc(h.storePhoto)))
+	router.HandlerFunc(http.MethodPost, "/v1/trips", h.storeTrip)
 
 	h.server = &http.Server{
 		Handler: h.enableCORS(router),

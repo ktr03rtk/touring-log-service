@@ -109,6 +109,8 @@ spec:
               value: /etc/data_store/cert/client.crt
             - name: KEY_PATH
               value: /etc/data_store/cert/client.key
+            - name: API_ENDPOINT
+              value: api-server.api.svc.cluster.local/v1/trips
       volumes:
         - name: certificate
           secret:

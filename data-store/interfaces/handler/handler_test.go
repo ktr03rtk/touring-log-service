@@ -64,8 +64,9 @@ func TestPayloadHandler(t *testing.T) {
 
 			sbr := mock.NewMockPayloadSubscribeRepository(ctrl)
 			str := mock.NewMockPayloadStoreRepository(ctrl)
+			tms := mock.NewMockTripMetadataRepository(ctrl)
 			sbu := usecase.NewPayloadSubscribeUsecase(sbr)
-			stu := usecase.NewPayloadStoreUsecase(str)
+			stu := usecase.NewPayloadStoreUsecase(str, tms)
 
 			ph := NewPayloadHandler(sbu, stu)
 
@@ -74,6 +75,8 @@ func TestPayloadHandler(t *testing.T) {
 
 			sbr.EXPECT().Subscribe(gomock.Any(), gomock.Any()).Return(tt.subscribeErr).Times(tt.subscribeCallTimes)
 			str.EXPECT().Store(gomock.Any(), testPayload).Return(tt.storeErr).Times(tt.storeCallTimes)
+			// TODO: add test case
+			tms.EXPECT().Create(gomock.Any()).Return(nil).AnyTimes()
 
 			eg.Go(func() error { return ph.Handle(ctx) })
 

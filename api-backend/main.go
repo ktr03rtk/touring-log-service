@@ -59,17 +59,20 @@ func main() {
 	conn := config.NewDBConn()
 	userRepository := persistence.NewUserPersistence(conn)
 	photoMetadataRepository := persistence.NewPhotoMetadataPersistence(conn)
+	tripMetadataRepository := persistence.NewTripMetadataPersistence(conn)
 
 	photoImageRepository, err := persistence.NewPhotoImagePersistence(ctx, region, bucket)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	userService := service.NewUService(userRepository)
+	userService := service.NewUserService(userRepository)
+	tripService := service.NewTripService(tripMetadataRepository)
 	userUsecase := usecase.NewUserUsecase(userRepository, userService)
 	photoUsecase := usecase.NewPhotoStoreUsecase(photoMetadataRepository, photoImageRepository)
+	tripUsecase := usecase.NewTripStoreUsecase(tripMetadataRepository, tripService)
 
-	h := handler.NewHandler(jwtSecret, userUsecase, photoUsecase)
+	h := handler.NewHandler(jwtSecret, userUsecase, photoUsecase, tripUsecase)
 
 	go func() {
 		h.Start()

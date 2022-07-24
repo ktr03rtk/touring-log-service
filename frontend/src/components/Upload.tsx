@@ -56,7 +56,7 @@ const Upload = ({ jwt }: UploadProperties) => {
               headers: myHeaders,
             };
 
-            fetch(`${process.env.REACT_APP_API_URL}/v1/upload`, requestOptions)
+            fetch(`${process.env.REACT_APP_API_URL}/v1/photos`, requestOptions)
               .then((res) => res.json())
               .then((data) => {
                 if (data.error) {

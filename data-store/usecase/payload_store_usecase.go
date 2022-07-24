@@ -13,12 +13,14 @@ type PayloadStoreUsecase interface {
 }
 
 type payloadStoreUsecase struct {
-	payloadStoreRepository repository.PayloadStoreRepository
+	payloadStoreRepository      repository.PayloadStoreRepository
+	tripMetadataStoreRepository repository.TripMetadataStoreRepository
 }
 
-func NewPayloadStoreUsecase(pr repository.PayloadStoreRepository) PayloadStoreUsecase {
+func NewPayloadStoreUsecase(pr repository.PayloadStoreRepository, tr repository.TripMetadataStoreRepository) PayloadStoreUsecase {
 	return &payloadStoreUsecase{
-		payloadStoreRepository: pr,
+		payloadStoreRepository:      pr,
+		tripMetadataStoreRepository: tr,
 	}
 }
 
@@ -31,6 +33,18 @@ func (pu *payloadStoreUsecase) Execute(ctx context.Context, ch <-chan *model.Pay
 		case p := <-ch:
 			if err := pu.payloadStoreRepository.Store(ctx, p); err != nil {
 				return errors.Wrapf(err, "failed to execute payload store usecase")
+			}
+
+			date, err := p.GetDate()
+			if err != nil {
+				return errors.Wrapf(err, "failed to get date")
+			}
+
+			unit := p.GetUnit()
+			trip := model.NewTrip(*date, unit)
+
+			if err := pu.tripMetadataStoreRepository.Create(trip); err != nil {
+				return errors.Wrapf(err, "failed to execute trip store usecase")
 			}
 		}
 	}

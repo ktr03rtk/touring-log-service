@@ -79,7 +79,7 @@ func TestUserSignupUseCase(t *testing.T) {
 			defer ctrl.Finish()
 
 			userRepository := mock.NewMockUserRepository(ctrl)
-			userService := service.NewUService(userRepository)
+			userService := service.NewUserService(userRepository)
 			usecase := NewUserUsecase(userRepository, userService)
 
 			gomock.InOrder(

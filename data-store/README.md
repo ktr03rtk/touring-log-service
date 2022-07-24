@@ -40,9 +40,9 @@ kubeseal -o yaml <secret2.yml >sealedsecret2.yml
 rm secret2.yml
 ```
 
-## Copy sealed secret manifest to mqtt manifest
+## Copy sealed secret manifest to data_store manifest
 
-Copy sealed secret manifest to the part of mqtt_server.yml
+Copy sealed secret manifest to the part of data_store.yml.
 
 ## Usage
 
