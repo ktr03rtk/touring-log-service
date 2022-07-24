@@ -6,7 +6,7 @@ CREATE TABLE IF NOT EXISTS photos(
   lat DECIMAL(8, 6) NOT NULL,
   lon DECIMAL(9, 6) NOT NULL,
   timestamp TIME NOT NULL,
-  s3_object_key VARCHAR(256) NOT NULL,
+  s3_object_key VARCHAR(255) NOT NULL,
   user_id CHAR(36) NOT NULL,
   INDEX idx_photos_userid_year (user_id, year),
   INDEX idx_photos_userid_year_month (user_id, year, month),
