@@ -48,7 +48,7 @@ spec:
         app: api-server
     spec:
       containers:
-        - image: ghcr.io/ktr03rtk/touring-log-service/api-backend:v0.0.7
+        - image: ghcr.io/ktr03rtk/touring-log-service/api-backend:v0.0.8
           name: api-server
           env:
             - name: AWS_ACCESS_KEY_ID
