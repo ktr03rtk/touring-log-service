@@ -15,8 +15,9 @@ import (
 )
 
 var (
-	region string
-	bucket string
+	region   string
+	bucket   string
+	endpoint string
 )
 
 func init() {
@@ -40,6 +41,13 @@ func getEnv() error {
 
 	bucket = b
 
+	e, ok := os.LookupEnv("API_ENDPOINT")
+	if !ok {
+		return errors.New("env API_ENDPOINT is not found")
+	}
+
+	endpoint = e
+
 	return nil
 }
 
@@ -57,8 +65,10 @@ func main() {
 		log.Fatal(err)
 	}
 
+	tms := adapter.NewHTTPAdapter(endpoint)
+
 	sbu := usecase.NewPayloadSubscribeUsecase(sbr)
-	stu := usecase.NewPayloadStoreUsecase(str)
+	stu := usecase.NewPayloadStoreUsecase(str, tms)
 
 	h := handler.NewPayloadHandler(sbu, stu)
 

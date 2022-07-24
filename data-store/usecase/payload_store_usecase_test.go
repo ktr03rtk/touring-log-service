@@ -15,6 +15,9 @@ import (
 func TestPayloadStoreUsecaseExecute(t *testing.T) {
 	t.Parallel()
 
+	testPayload, err := model.NewPayload([]byte("test message"), "touring-log/raw/thing=thingName/year=2022/month=01/day=12/2022-01-12-12-51-10.dat")
+	assert.Nil(t, err)
+
 	tests := []struct {
 		name        string
 		returnErr   error
@@ -40,19 +43,21 @@ func TestPayloadStoreUsecaseExecute(t *testing.T) {
 			ctrl := gomock.NewController(t)
 			defer ctrl.Finish()
 
-			repository := mock.NewMockPayloadStoreRepository(ctrl)
-			usecase := NewPayloadStoreUsecase(repository)
+			str := mock.NewMockPayloadStoreRepository(ctrl)
+			tms := mock.NewMockTripMetadataRepository(ctrl)
+			usecase := NewPayloadStoreUsecase(str, tms)
 
 			ctx, cancel := context.WithCancel(context.Background())
 			eg, ctx := errgroup.WithContext(ctx)
 			ch := make(chan *model.Payload)
 
-			payload := &model.Payload{}
-			repository.EXPECT().Store(ctx, payload).Return(tt.returnErr).Times(1)
+			str.EXPECT().Store(ctx, testPayload).Return(tt.returnErr).Times(1)
+			// TODO: add test case
+			tms.EXPECT().Create(gomock.Any()).Return(nil).AnyTimes()
 
 			eg.Go(func() error { return usecase.Execute(ctx, ch) })
 
-			ch <- payload
+			ch <- testPayload
 			cancel()
 
 			if err := eg.Wait(); err != nil {
