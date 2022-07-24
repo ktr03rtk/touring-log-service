@@ -16,12 +16,12 @@ type (
 	TripID string
 )
 
-func NewTrip(id TripID, time time.Time, unit string) *Trip {
+func NewTrip(id TripID, date time.Time, unit string) *Trip {
 	data := &Trip{
 		ID:    id,
-		Year:  time.Year(),
-		Month: int(time.Month()),
-		Day:   time.Day(),
+		Year:  date.Year(),
+		Month: int(date.Month()),
+		Day:   date.Day(),
 		Unit:  unit,
 	}
 
