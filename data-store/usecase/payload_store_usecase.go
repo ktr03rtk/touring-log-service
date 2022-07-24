@@ -35,14 +35,13 @@ func (pu *payloadStoreUsecase) Execute(ctx context.Context, ch <-chan *model.Pay
 				return errors.Wrapf(err, "failed to execute payload store usecase")
 			}
 
-			id := model.CreateUUID()
 			date, err := p.GetDate()
 			if err != nil {
 				return errors.Wrapf(err, "failed to get date")
 			}
 
 			unit := p.GetUnit()
-			trip := model.NewTrip(model.TripID(id), *date, unit)
+			trip := model.NewTrip(*date, unit)
 
 			if err := pu.tripMetadataStoreRepository.Create(trip); err != nil {
 				return errors.Wrapf(err, "failed to execute trip store usecase")
