@@ -1,0 +1,110 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  creationTimestamp: null
+  name: api
+spec: {}
+status: {}
+
+---
+apiVersion: bitnami.com/v1alpha1
+kind: SealedSecret
+metadata:
+  creationTimestamp: null
+  name: api-secrets
+  namespace: api
+spec:
+  encryptedData:
+    access_key_id: AgCisb5c9EgDjmIFB1PuN9xOTmGMbiX3coWrXHC5gbOs54m6aKVHUyK6qbdQpsqxpePXsXCJoF3BRmaBWnzm6CEwvSGlTRMAQT7RZLCbEbFpbODjV8d9HYhc0g5DaVa5QnDq9HzVCfzdO3VdmkCzXpMY1lYyjJRoy3MS3j6EXcoPzF/kyOT0l9cLQY5x7Hlah5IFGRukzGAZcxXvOlUKB+YggVAJX922KFbfgEl7TmdH4qcAri9Wbg6hgEF9W+OblxKa6jzbrEuKXwUJt7CrcDTMQj+2UXm/pJ6+ed9N1R51jyYfrGXqLiFx8F/S5LApwHJBeRbpcwCV2IYCqDrtgQy8iCNQxAIw+6hckVwSGIOHBnHHkZMhYpSw1ipuCjgBETps0XpFlUXorWYKkLngfCUAHEReZZLaxpb+v7XNUuoJSpAcmWePhEi9Ii6bNt8O4sr98EFAPO+sQi6D3jds5kAjasOWsQ81czAOLS2sqBDFpr7WKzO5KN/ZhctZde0+p6QFR3M6HIcDRxVW/H5ww4PblEBzrpdNsf8kmRIU8QJfitzOef8fSMFnIGxGhcFzpirGxKV8wDbVqGtyBV6UH1DPfZURZuLVl5o0uze1CQ4T2jDl3uHPkfYjvPipl94vzzf2c0I2+X/8t0RElusZW/jZL7h9aDJZkdF9z7p5QFay/mvVyt0uFFGZEnyGPM6e17lvMzoQrirJFDkN5gMYf8p48yONBg==
+    bucket: AgAAy1kkoTN2pT8PuV1JjCm33AX+rscjhKeClPUxrTL8uRMmPDfSaqAzZycXierC2+WUSsO3u0c3egO79Fzukw3/4VC22nuCE4VEwaA+E2Z4war6nYt3W5bsW52eF1JDlvwTTOQqUlsivgZut0/6H90MtPnxrEsZ5lQX5usNTA0IaFg5riNCRBz/SsENkzm2CjEx6gjOEGgWBa+bNYhqf06p9tO1hBtZQmR64XJT8fCH/EIASeXt9MZZQC46B+RzBFURUV85iZ0Z0CefrA2Y3zgFq3iuftJEq1tL/V/WppnQH0Z2m6sJwLdXutWY0SNPOQv/BHiCmbPsF8KJx6H3uezY8/yLNuDtur2qr2F118k2kp1Jf47JucvRHhh5ZgrboGjxjZsW/Ed3kc2xtfJiYaANdZQV6h8bpMcxgWIEVL4eB6FHiRIwD1QPUuvGxyTtnWaeu7pACb8qXvaFg0ni7RBSH7Xh08pmzJbZ6R5IEZ3wNfYHQ4j6MQbjGIXweyslWOqC+E/8FN0AivkMJTyy5LwAU0vXsf6YCBYsdKIuxvAzaSltRAjc4TbU6qkkqre/j/rkajpEKDyt/ejADYX7s1PLfVIRdEBgSixKHpO81/TTs2N3f8SZmkVe6acQXoXMqHhTfWOEy9trqA2MaaWkvMTYXUtccGDzVsFJ5dBaFoHm2mcWRGU7RNbkPKDsrARnhgd29AmdZNIdTAybjmEuRyvE3GrPcm9Juv2za5J+ldB7nuk=
+    jwt_secret: AgAZO+rco3XVTjhkzemt5Lm1CNH+tSqLOgmRmKfFOiEGNEwO1ZFV9kxZTSjyGMpiq3BlJnaZ9duQdEj9vOisuKCMQD5H6HtlXcWTShWALCq3CYJ17TsxVgsmO9iEWyX6FuGKMOK0MpjvINXQUeHzgk3y7lFMfzYMv34kdWdYdWgrGKsQhBIz53PDUoo653cLD7rpOP1oLukL2LuPH8qgseHNwxj4VHiK+mVTPOk7PZ4bE72R/6fKsfuNkhck11XPGqkUAh/+iiX1WMKaOLR/Ho+tbuUcLN5GrK79iF2usfH1ce5VAzuYi8U6eBBnYRSFlYsWmXJ/fBifoZxLWjyev+tu3VzE/aOZcyvCZgPU4OB1GjKODAvz/hckcfyo8qeYQVPAJuA+wotajLcclPvuytNR72HQ2eRUusIXmNxheODeorE48+r64wMIPIGJj2RXtu/hq9TsoGdjs6S1kSzHeseEvbKYq+7I4vfgSzPw8H7binn7AkeDQVSj9odnzvGmIPZpDh02hCF7S1Xh56Ujf6dwEsIC8x2ahWfgs5h+H9VdVH1283IwAgFxgAq0c6cn4DNRCYOrKvxjkvq/JSPJu6ZPsO8dPeqdMmXftEjRvRaUxNS8FGYBLcXs0AQgvItaIFLOuakUyLR6JOzPlq4zUGlVtceyIW9smNskIjwFwhWIPaJm2VtvgVSH3CKYv70Jdv2+o8Bz2DZVu1TKEGvCnF5XjdhYIjlNBpJOutqygHeVEw==
+    mysql_password: AgByeXZAc/Q6iN7EfcxnkvybOyXei1qZhRPPfgCgyIVsDsME5DmzHHSl1vRxw4VDwIQB/B4uDfTp5/aZlWP2TijFxFRaKbUu03YhlgA+lzK9GnF5tIrqlXGZFOXZ+1pLAKrehsF2ehb/V/qqMxw17KB9SYatCPiCISyKmI2WXWkGtI4Dbl/Ri/05tSCmIbMURAaRNdEpoynCzfvd6MZ8/OBeYvFLFRC4020P95xBYCUbtdnaVGqIOZeZ248yi/W4Xkn6oqmy9cSqEL01dJ49EZZm4dYTJz3qX9ZFVo34d7Xzql6c24hb2gAD+NVql2qOd9B10V+/3UghnVk2RP9HNrUMYPln5A3uBdq4ltj8qqyWT8iO3KVK02ehZMmlybYqxM3E7UOqvzwnCs2eyPVbhEPt9zHFHcIuFQ4DhV6jEYM68gM+t9LcadwLBduomXy/Z0U0swmHURuEnGR5RoAQFKYJtjDbYlJ6F2uXBN4Tt2G6nVeghXixnaKJDBI8PzBu1dx9XWOo7Ym4+FZ5U8zE+kdnWqTJr5ocNpGpVTVsnUTIVapglaOje3mTz0nHR5OHiDdakgrZK+/M1se0CRp8gkG7usQYLuZ0vejDbh198Om8caB7D50eJkBICL0j5kXJV34uTIFnaplb7BF3FFTPOwa4Ts52vwT6evpairmGff9eM6IM2RMbI3ciSaxH7pNuqb8VOmczKeg5l9vorN6LxZL7TXuwJck=
+    mysql_user: AgA1t14FqCF/0HCC+/J4ug6wtbSQYjZAqpufjWTDKaIqrZQAH3t4GU1N8i799J3VY5xNO8imDyr1B2scjiuTz8xSuO7Znfoz3dAMSDrYyANspppegs7UtA93ai8I4iN+vwwJrkOP0jXFElPpvMyB9Wi8+Nunf01yH31YlXfVreh12BbtY59EaPlFHzvXMUFu7OzpfsjFPCx6bpkxTqX3hP7yFm04hBXs+I8PmNYHUjSlh2sh1gqb1KFFXisK18WLQAbvvsHVVMh2ib7OIXXAZbzVBJAsktE/fpGsLUQlvNGotHoo+Ox9PJkc5eaChRoiEuYqSv58Tt4U0X4V7v5rBz6spKt4Mto1XXzZatp6+OpQv6mNm2IhYaHeFws5b/8E87EUpKctfTg9C4WhZOAB98etkA7nzug/q0ccAFlMI6iMIBGRDDHzjLPOVKRdH76VxWrWI9aFKOHl9jiFXSLd35ry235KSTqmFEEB/nkUInRU9oOAfXvMZH11VsV/j7FTx4iuSfWV0ry7TXzsPlLbMKloaHa/mK/obTrr28pBcCk5hFsxgipev1iT91lqchqKM86nKdsLhQj60iisA301sNRY7SRlt6InUG2xleo4ckr/ei0bDUJ9N/GnS4GddNOljZD9bgWx5Z5y8a8a36WS7btbxdte0dQC33VRbrH7F/chy2KKXQ8db+c8XzaVnrLxMkIMNnQUYlFrN1M=
+    secret_access_key: AgAZZoIpLCBwHfMiGlJ0kMm0MtYzDfmjc+4UjALbU8rtQVNPKDe3XAduQ2CuRm6Cisn6w2FVuxXPDuYsLbUffX840Gvvx6ZdfjIGiC6Z5DfnS5Qrj1iVtUqmz4exfGbvK+PbeQHXKlDwmasgqob+GWt0/axa5jwlw8mdKHURWrtcMushMztsigh0LYnMUIgfW/038MbCj5lUyq5+11ZIPdLotyqWQL/pvlrPYXPLYyAGNF/2ewPZgaSytYVj1kREDl51gxpr4Qm5FUb/9m6Lk/eI2okrmYp4EdU5id87PqNegK2cF4F8JaJ550ZDzaVxLBtHx/hZFo9sZAi9LZk4Z3QM+VQlOkbqYUqOQEE0yVN7COf84EZdqBtjA636RjozpXnXXhUynGJ+B4V1fSzdxYnSSsHSS0ZV4zKNtQlvc8mQnEeZJZxfm0yuiulsXPHuYER5cpgWU/fs7po1diZJXr6Hl0BeCpz5VyChzeFFBtlvQG96vcjCflOXwNcQaOEo1D1YGnfMh/rTO1v2Qh+emWhJB5mNgoN2PldyPTgOJ84i2M42E/6bsn57Qo3hwzCmFH5Ax8BM/YUsSco21Bd9jz1x8r1BWrGKlCwBUnQnpCuSVZGyKWfxNmLG4IdIaRYrnhIZSWjax4/qh987xWnDjTbFRAnGnF2zUpaid56P1VEhWHJ6SfNFjLnx0tdm9sA/LfAS44GLs52Es78j61v2LTBzW7mcktZm2EEjzQBD/MV8vRxhfO9V9Dm1
+  template:
+    data: null
+    metadata:
+      creationTimestamp: null
+      name: api-secrets
+      namespace: api
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: api-server
+  name: api-server
+  namespace: api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: api-server
+  template:
+    metadata:
+      labels:
+        app: api-server
+    spec:
+      containers:
+        - image: ghcr.io/ktr03rtk/touring-log-service/api-backend:v0.0.7
+          name: api-server
+          env:
+            - name: AWS_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: api-secrets
+                  key: access_key_id
+            - name: AWS_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: api-secrets
+                  key: secret_access_key
+            - name: REGION
+              value: ap-northeast-1
+            - name: BUCKET
+              valueFrom:
+                secretKeyRef:
+                  name: api-secrets
+                  key: bucket
+            - name: JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: api-secrets
+                  key: jwt_secret
+            - name: DB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: api-secrets
+                  key: mysql_user
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: api-secrets
+                  key: mysql_password
+            - name: DB_HOST
+              value: mysql.database.svc.cluster.local:3306
+            - name: DB_NAME
+              value: touring
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: api-server
+  name: api-server
+  namespace: api
+spec:
+  ports:
+    - nodePort: 30800
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
+  selector:
+    app: api-server
+  type: NodePort
+status:
+  loadBalancer: {}
