@@ -63,7 +63,6 @@ spec:
       labels:
         app: data-store
     spec:
-      hostNetwork: true
       containers:
         - image: ghcr.io/ktr03rtk/touring-log-service/data-store:v0.0.8
           name: data-store
@@ -110,7 +109,7 @@ spec:
             - name: KEY_PATH
               value: /etc/data_store/cert/client.key
             - name: API_ENDPOINT
-              value: api-server.api.svc.cluster.local/v1/trips
+              value: http://api-server.api.svc.cluster.local:8080/v1/trips
       volumes:
         - name: certificate
           secret:
