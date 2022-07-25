@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"net/http"
+	"time"
 
 	"github.com/ktr03rtk/touring-log-service/data-store/domain/model"
 	"github.com/ktr03rtk/touring-log-service/data-store/domain/repository"
@@ -18,7 +19,9 @@ type httpAdapter struct {
 func NewHTTPAdapter(endpoint string) repository.TripMetadataStoreRepository {
 	return &httpAdapter{
 		endpoint,
-		&http.Client{},
+		&http.Client{
+			Timeout: 5 * time.Second,
+		},
 	}
 }
 
