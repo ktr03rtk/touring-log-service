@@ -3,6 +3,7 @@ import { Route, Routes, Link } from 'react-router-dom';
 
 import './App.css';
 import Home from './components/Home';
+import Log from './components/Log';
 import Login from './components/Login';
 import Nav from './components/Nav';
 import Signup from './components/Signup';
@@ -32,6 +33,7 @@ function App() {
           <div className='col-md-10'>
             <Routes>
               <Route path='/' element={<Home />} />
+              <Route path='/log' element={<Log jwt={jwt} />} />
               <Route path='/upload' element={<Upload jwt={jwt} />} />
               <Route path='/signup' element={<Signup />} />
               <Route path='/login' element={<Login handleJWTChange={handleJWTChange} />} />

@@ -68,11 +68,18 @@ const Nav = ({ jwt, setJwt }: NavProperties) => {
               </Link>
             </li>
             {jwt !== '' && (
-              <li className='nav-item'>
-                <Link to='/upload' className='nav-link'>
-                  Upload
-                </Link>
-              </li>
+              <>
+                <li className='nav-item'>
+                  <Link to='/log' className='nav-link'>
+                    Log
+                  </Link>
+                </li>
+                <li className='nav-item'>
+                  <Link to='/upload' className='nav-link'>
+                    Upload
+                  </Link>
+                </li>
+              </>
             )}
           </ul>
           <div className='text-end'>{loginLink}</div>
