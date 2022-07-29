@@ -2,8 +2,12 @@ package handler
 
 import (
 	"encoding/json"
+	"fmt"
+	"io"
 	"net/http"
 
+	"github.com/graphql-go/graphql"
+	"github.com/ktr03rtk/touring-log-service/api-backend/domain/model"
 	"github.com/pkg/errors"
 )
 
@@ -74,4 +78,90 @@ func (h *handler) storeTrip(w http.ResponseWriter, r *http.Request) {
 		h.errJSON(w, err)
 		return
 	}
+}
+
+var touringLogs []*model.TouringLog
+
+func (h *handler) graphQLFileds(r *http.Request) graphql.Fields {
+	return graphql.Fields{
+		"list": &graphql.Field{
+			Type:        graphql.NewList(touringLogType),
+			Description: "Get log by year and month",
+			Args: graphql.FieldConfigArgument{
+				"year": &graphql.ArgumentConfig{
+					Type: graphql.Int,
+				},
+				"month": &graphql.ArgumentConfig{
+					Type: graphql.Int,
+				},
+			},
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				year, ok := p.Args["year"].(int)
+				if !ok {
+					return nil, errors.New("failed to specify year")
+				}
+
+				month, ok := p.Args["month"].(int)
+				if !ok {
+					return nil, errors.New("failed to specify month")
+				}
+
+				id, unit, err := getAccountInfo(r)
+				if err != nil {
+					return nil, errors.New("failed to specify identity")
+				}
+
+				touringLogs, err := h.listQueryUsecase.Execute(year, month, id, unit)
+				if err != nil {
+					return nil, errors.New("failed to fetch log")
+				}
+
+				return touringLogs, nil
+			},
+		},
+	}
+}
+
+var touringLogType = graphql.NewObject(
+	graphql.ObjectConfig{
+		Name: "TouringLog",
+		Fields: graphql.Fields{
+			"year": &graphql.Field{
+				Type: graphql.Int,
+			},
+			"month": &graphql.Field{
+				Type: graphql.Int,
+			},
+			"day": &graphql.Field{
+				Type: graphql.Int,
+			},
+		},
+	},
+)
+
+func (h *handler) graphQL(w http.ResponseWriter, r *http.Request) {
+	q, _ := io.ReadAll(r.Body)
+	query := string(q)
+
+	rootQuery := graphql.ObjectConfig{Name: "RootQuery", Fields: h.graphQLFileds(r)}
+	schemaConfig := graphql.SchemaConfig{Query: graphql.NewObject(rootQuery)}
+
+	schema, err := graphql.NewSchema(schemaConfig)
+	if err != nil {
+		h.errJSON(w, err)
+		return
+	}
+
+	params := graphql.Params{Schema: schema, RequestString: query}
+	resp := graphql.Do(params)
+
+	if len(resp.Errors) > 0 {
+		h.errJSON(w, errors.New(fmt.Sprintf("failed: %+v", resp.Errors)))
+		return
+	}
+
+	j, _ := json.MarshalIndent(resp, "", " ")
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	w.Write(j)
 }

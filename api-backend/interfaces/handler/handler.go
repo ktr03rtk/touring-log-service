@@ -24,22 +24,24 @@ type config struct {
 }
 
 type handler struct {
-	config       config
-	userUsecase  usecase.UserUsecase
-	photoUsecase usecase.PhotoStoreUsecase
-	tripUsecase  usecase.TripStoreUsecase
-	server       *http.Server
+	config           config
+	userUsecase      usecase.UserUsecase
+	photoUsecase     usecase.PhotoStoreUsecase
+	tripUsecase      usecase.TripStoreUsecase
+	listQueryUsecase usecase.ListQueryUsecase
+	server           *http.Server
 }
 
-func NewHandler(secret string, uu usecase.UserUsecase, pu usecase.PhotoStoreUsecase, tu usecase.TripStoreUsecase) Handler {
+func NewHandler(secret string, uu usecase.UserUsecase, pu usecase.PhotoStoreUsecase, tu usecase.TripStoreUsecase, lu usecase.ListQueryUsecase) Handler {
 	var cfg config
 	cfg.jwt.secret = secret
 
 	h := &handler{
-		config:       cfg,
-		userUsecase:  uu,
-		photoUsecase: pu,
-		tripUsecase:  tu,
+		config:           cfg,
+		userUsecase:      uu,
+		photoUsecase:     pu,
+		tripUsecase:      tu,
+		listQueryUsecase: lu,
 	}
 
 	h.setupServer()
@@ -73,6 +75,8 @@ func (h *handler) setupServer() {
 
 	router.POST("/v1/photos", h.wrap(secure.ThenFunc(h.storePhoto)))
 	router.HandlerFunc(http.MethodPost, "/v1/trips", h.storeTrip)
+
+	router.POST("/v1/graphql", h.wrap(secure.ThenFunc(h.graphQL)))
 
 	h.server = &http.Server{
 		Handler: h.enableCORS(router),
