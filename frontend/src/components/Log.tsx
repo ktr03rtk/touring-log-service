@@ -28,6 +28,8 @@ const Log = ({ jwt }: LogProperties) => {
 
     const myHeaders = new Headers();
     myHeaders.append('Content-Type', 'application/json');
+    myHeaders.append('Authorization', 'Bearer ' + jwt);
+
     const requestOptions = {
       method: 'POST',
       body: payload,
@@ -37,6 +39,7 @@ const Log = ({ jwt }: LogProperties) => {
     fetch(`${process.env.REACT_APP_API_URL}/v1/graphql`, requestOptions)
       .then((response) => response.json())
       .then((data) => {
+        console.log(data);
         return Object.values(data.data.list);
       })
       .then((days) => {
