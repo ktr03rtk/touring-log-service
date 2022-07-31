@@ -10,17 +10,34 @@ type LogProperties = {
   jwt: string;
 };
 
+type Trip = {
+  lat: number;
+  lng: number;
+};
+
+type Photo = {
+  id: string;
+  lat: number;
+  lng: number;
+};
+
+type TouringLog = {
+  trip: Trip;
+  photo: Photo;
+};
+
 const Log = ({ jwt }: LogProperties) => {
   const navigate = useNavigate();
   const [year, setYear] = useState(new Date().getFullYear());
   const [month, setMonth] = useState(new Date().getMonth());
   const [includeDate, setIncludeDate] = useState<Date[]>([]);
-  const [days, setDays] = useState<number[]>([]);
+  const [photoMarker, setPhotoMarker] = useState<Photo[]>([]);
+  const [startDate, setStartDate] = useState(new Date());
 
   useEffect(() => {
     const payload = `
   {
-    list(year: ${year}, month: ${month + 1}) {
+    dateList(year: ${year}, month: ${month + 1}) {
       day
     }
   }
@@ -39,8 +56,7 @@ const Log = ({ jwt }: LogProperties) => {
     fetch(`${process.env.REACT_APP_API_URL}/v1/graphql`, requestOptions)
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
-        return Object.values(data.data.list);
+        return Object.values(data.data.dateList);
       })
       .then((days) => {
         const dates = days.map((m) => new Date(year, month, (m as { day: number }).day));
@@ -51,7 +67,37 @@ const Log = ({ jwt }: LogProperties) => {
       });
   }, [year, month]);
 
-  const [startDate, setStartDate] = useState(new Date());
+  useEffect(() => {
+    const payload = `
+  {
+    touringLog(year: ${year}, month: ${month + 1}, day: ${startDate.getDate()}) {
+      photo {
+        id
+        lat
+        lng
+      }
+    }
+  }
+  `;
+
+    const myHeaders = new Headers();
+    myHeaders.append('Content-Type', 'application/json');
+    myHeaders.append('Authorization', 'Bearer ' + jwt);
+
+    const requestOptions = {
+      method: 'POST',
+      body: payload,
+      headers: myHeaders,
+    };
+
+    fetch(`${process.env.REACT_APP_API_URL}/v1/graphql`, requestOptions)
+      .then((response) => response.json())
+      .then((data) => {
+        const photo = Object.values(data.data.touringLog.photo);
+        setPhotoMarker(photo as Photo[]);
+        return;
+      });
+  }, [startDate]);
 
   const handleChange = (e: any) => {
     setStartDate(e);
@@ -97,10 +143,6 @@ const Log = ({ jwt }: LogProperties) => {
     ],
     zIndex: 1,
   };
-  const positionAkiba = {
-    lat: 35.69731,
-    lng: 139.7749,
-  };
 
   useEffect(() => {
     if (jwt === '') {
@@ -129,7 +171,9 @@ const Log = ({ jwt }: LogProperties) => {
       <div className='card'>
         <LoadScript googleMapsApiKey={process.env.REACT_APP_MAP_API_KEY ?? ''}>
           <GoogleMap mapContainerStyle={containerStyle} center={center} zoom={16}>
-            <Marker position={positionAkiba} />
+            {photoMarker.map((m) => {
+              return <Marker key={m.id} position={m} />;
+            })}
             <Polyline onLoad={onLoad} path={path} options={options} />
           </GoogleMap>
         </LoadScript>
