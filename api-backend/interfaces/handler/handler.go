@@ -24,24 +24,26 @@ type config struct {
 }
 
 type handler struct {
-	config           config
-	userUsecase      usecase.UserUsecase
-	photoUsecase     usecase.PhotoStoreUsecase
-	tripUsecase      usecase.TripStoreUsecase
-	listQueryUsecase usecase.ListQueryUsecase
-	server           *http.Server
+	config               config
+	userUsecase          usecase.UserUsecase
+	photoUsecase         usecase.PhotoStoreUsecase
+	tripUsecase          usecase.TripStoreUsecase
+	listQueryUsecase     usecase.DateListQueryUsecase
+	photoLogQueryUsecase usecase.PhotoLogQueryUsecase
+	server               *http.Server
 }
 
-func NewHandler(secret string, uu usecase.UserUsecase, pu usecase.PhotoStoreUsecase, tu usecase.TripStoreUsecase, lu usecase.ListQueryUsecase) Handler {
+func NewHandler(secret string, uu usecase.UserUsecase, pu usecase.PhotoStoreUsecase, tu usecase.TripStoreUsecase, du usecase.DateListQueryUsecase, plu usecase.PhotoLogQueryUsecase) Handler {
 	var cfg config
 	cfg.jwt.secret = secret
 
 	h := &handler{
-		config:           cfg,
-		userUsecase:      uu,
-		photoUsecase:     pu,
-		tripUsecase:      tu,
-		listQueryUsecase: lu,
+		config:               cfg,
+		userUsecase:          uu,
+		photoUsecase:         pu,
+		tripUsecase:          tu,
+		listQueryUsecase:     du,
+		photoLogQueryUsecase: plu,
 	}
 
 	h.setupServer()

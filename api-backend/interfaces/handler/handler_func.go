@@ -80,12 +80,12 @@ func (h *handler) storeTrip(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-var touringLogs []*model.TouringLog
+var logDate []*model.LogDate
 
 func (h *handler) graphQLFileds(r *http.Request) graphql.Fields {
 	return graphql.Fields{
-		"list": &graphql.Field{
-			Type:        graphql.NewList(touringLogType),
+		"dateList": &graphql.Field{
+			Type:        graphql.NewList(logDateType),
 			Description: "Get log by year and month",
 			Args: graphql.FieldConfigArgument{
 				"year": &graphql.ArgumentConfig{
@@ -111,9 +111,59 @@ func (h *handler) graphQLFileds(r *http.Request) graphql.Fields {
 					return nil, errors.New("failed to specify identity")
 				}
 
-				touringLogs, err := h.listQueryUsecase.Execute(year, month, id, unit)
+				logDates, err := h.listQueryUsecase.Execute(year, month, id, unit)
 				if err != nil {
 					return nil, errors.New("failed to fetch log")
+				}
+
+				return logDates, nil
+			},
+		},
+		"touringLog": &graphql.Field{
+			Type:        touringLogType,
+			Description: "Get log by year and month",
+			Args: graphql.FieldConfigArgument{
+				"year": &graphql.ArgumentConfig{
+					Type: graphql.Int,
+				},
+				"month": &graphql.ArgumentConfig{
+					Type: graphql.Int,
+				},
+				"day": &graphql.ArgumentConfig{
+					Type: graphql.Int,
+				},
+			},
+			Resolve: func(p graphql.ResolveParams) (interface{}, error) {
+				year, ok := p.Args["year"].(int)
+				if !ok {
+					return nil, errors.New("failed to specify year")
+				}
+
+				month, ok := p.Args["month"].(int)
+				if !ok {
+					return nil, errors.New("failed to specify month")
+				}
+
+				day, ok := p.Args["day"].(int)
+				if !ok {
+					return nil, errors.New("failed to specify day")
+				}
+
+				id, unit, err := getAccountInfo(r)
+				if err != nil {
+					return nil, errors.New("failed to specify identity")
+				}
+
+				fmt.Printf("--------------- %+v\n", unit)
+				// TODO: fetch trip
+
+				photoLog, err := h.photoLogQueryUsecase.Execute(year, month, day, id)
+				if err != nil {
+					return nil, errors.New("failed to fetch log")
+				}
+
+				touringLogs := model.TouringLog{
+					Photo: photoLog,
 				}
 
 				return touringLogs, nil
@@ -122,9 +172,9 @@ func (h *handler) graphQLFileds(r *http.Request) graphql.Fields {
 	}
 }
 
-var touringLogType = graphql.NewObject(
+var logDateType = graphql.NewObject(
 	graphql.ObjectConfig{
-		Name: "TouringLog",
+		Name: "LogDate",
 		Fields: graphql.Fields{
 			"year": &graphql.Field{
 				Type: graphql.Int,
@@ -134,6 +184,51 @@ var touringLogType = graphql.NewObject(
 			},
 			"day": &graphql.Field{
 				Type: graphql.Int,
+			},
+		},
+	},
+)
+
+var touringLogType = graphql.NewObject(
+	graphql.ObjectConfig{
+		Name: "TouringLog",
+		Fields: graphql.Fields{
+			"trip": &graphql.Field{
+				Type: graphql.NewList(tripLogType),
+			},
+			"photo": &graphql.Field{
+				Type: graphql.NewList(photoLogType),
+			},
+		},
+	},
+)
+
+var tripLogType = graphql.NewObject(
+	graphql.ObjectConfig{
+		Name: "TripLog",
+		Fields: graphql.Fields{
+			"lat": &graphql.Field{
+				Type: graphql.Float,
+			},
+			"lng": &graphql.Field{
+				Type: graphql.Float,
+			},
+		},
+	},
+)
+
+var photoLogType = graphql.NewObject(
+	graphql.ObjectConfig{
+		Name: "PhotoLog",
+		Fields: graphql.Fields{
+			"id": &graphql.Field{
+				Type: graphql.String,
+			},
+			"lat": &graphql.Field{
+				Type: graphql.Float,
+			},
+			"lng": &graphql.Field{
+				Type: graphql.Float,
 			},
 		},
 	},

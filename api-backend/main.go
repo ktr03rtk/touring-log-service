@@ -72,9 +72,10 @@ func main() {
 	userUsecase := usecase.NewUserUsecase(userRepository, userService)
 	photoUsecase := usecase.NewPhotoStoreUsecase(photoMetadataRepository, photoImageRepository)
 	tripUsecase := usecase.NewTripStoreUsecase(tripMetadataRepository, tripService)
-	listQueryUsecase := usecase.NewListQueryUsecase(queryAdapterRepository)
+	listQueryUsecase := usecase.NewDateListQueryUsecase(queryAdapterRepository)
+	photoLogQueryUsecase := usecase.NewPhotoLogQueryUsecase(queryAdapterRepository)
 
-	h := handler.NewHandler(jwtSecret, userUsecase, photoUsecase, tripUsecase, listQueryUsecase)
+	h := handler.NewHandler(jwtSecret, userUsecase, photoUsecase, tripUsecase, listQueryUsecase, photoLogQueryUsecase)
 
 	go func() {
 		h.Start()
