@@ -60,6 +60,7 @@ func main() {
 	userRepository := persistence.NewUserPersistence(conn)
 	photoMetadataRepository := persistence.NewPhotoMetadataPersistence(conn)
 	tripMetadataRepository := persistence.NewTripMetadataPersistence(conn)
+	queryAdapterRepository := persistence.NewQueryAdapter(conn)
 
 	photoImageRepository, err := persistence.NewPhotoImagePersistence(ctx, region, bucket)
 	if err != nil {
@@ -71,8 +72,10 @@ func main() {
 	userUsecase := usecase.NewUserUsecase(userRepository, userService)
 	photoUsecase := usecase.NewPhotoStoreUsecase(photoMetadataRepository, photoImageRepository)
 	tripUsecase := usecase.NewTripStoreUsecase(tripMetadataRepository, tripService)
+	listQueryUsecase := usecase.NewDateListQueryUsecase(queryAdapterRepository)
+	photoLogQueryUsecase := usecase.NewPhotoLogQueryUsecase(queryAdapterRepository)
 
-	h := handler.NewHandler(jwtSecret, userUsecase, photoUsecase, tripUsecase)
+	h := handler.NewHandler(jwtSecret, userUsecase, photoUsecase, tripUsecase, listQueryUsecase, photoLogQueryUsecase)
 
 	go func() {
 		h.Start()
