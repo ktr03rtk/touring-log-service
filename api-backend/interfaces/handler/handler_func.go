@@ -1,12 +1,14 @@
 package handler
 
 import (
+	"encoding/base64"
 	"encoding/json"
 	"fmt"
 	"io"
 	"net/http"
 
 	"github.com/graphql-go/graphql"
+	"github.com/julienschmidt/httprouter"
 	"github.com/ktr03rtk/touring-log-service/api-backend/domain/model"
 	"github.com/pkg/errors"
 )
@@ -31,7 +33,7 @@ func (h *handler) storePhoto(w http.ResponseWriter, r *http.Request) {
 
 	files := r.MultipartForm.File["images"]
 	for _, file := range files {
-		if err := h.photoUsecase.Execute(file, id, unit); err != nil {
+		if err := h.photoStoreUsecase.Execute(file, id, unit); err != nil {
 			h.errJSON(w, err)
 
 			return
@@ -40,6 +42,32 @@ func (h *handler) storePhoto(w http.ResponseWriter, r *http.Request) {
 
 	res := jsonResp{
 		OK: true,
+	}
+
+	if err := h.writeJSON(w, http.StatusOK, res, "response"); err != nil {
+		h.errJSON(w, err)
+		return
+	}
+}
+
+func (h *handler) getPhoto(w http.ResponseWriter, r *http.Request) {
+	params := httprouter.ParamsFromContext(r.Context())
+
+	reader, err := h.photoGetUsecase.Execute(params.ByName("id"))
+	if err != nil {
+		h.errJSON(w, err)
+		return
+	}
+
+	buf, err := io.ReadAll(reader)
+	if err != nil {
+		h.errJSON(w, err)
+		return
+	}
+
+	res := jsonResp{
+		OK:      true,
+		Message: base64.StdEncoding.EncodeToString(buf),
 	}
 
 	if err := h.writeJSON(w, http.StatusOK, res, "response"); err != nil {

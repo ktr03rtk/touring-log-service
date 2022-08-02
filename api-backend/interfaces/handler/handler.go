@@ -26,21 +26,23 @@ type config struct {
 type handler struct {
 	config               config
 	userUsecase          usecase.UserUsecase
-	photoUsecase         usecase.PhotoStoreUsecase
+	photoStoreUsecase    usecase.PhotoStoreUsecase
+	photoGetUsecase      usecase.PhotoGetUsecase
 	tripUsecase          usecase.TripStoreUsecase
 	listQueryUsecase     usecase.DateListQueryUsecase
 	photoLogQueryUsecase usecase.PhotoLogQueryUsecase
 	server               *http.Server
 }
 
-func NewHandler(secret string, uu usecase.UserUsecase, pu usecase.PhotoStoreUsecase, tu usecase.TripStoreUsecase, du usecase.DateListQueryUsecase, plu usecase.PhotoLogQueryUsecase) Handler {
+func NewHandler(secret string, uu usecase.UserUsecase, psu usecase.PhotoStoreUsecase, pgu usecase.PhotoGetUsecase, tu usecase.TripStoreUsecase, du usecase.DateListQueryUsecase, plu usecase.PhotoLogQueryUsecase) Handler {
 	var cfg config
 	cfg.jwt.secret = secret
 
 	h := &handler{
 		config:               cfg,
 		userUsecase:          uu,
-		photoUsecase:         pu,
+		photoStoreUsecase:    psu,
+		photoGetUsecase:      pgu,
 		tripUsecase:          tu,
 		listQueryUsecase:     du,
 		photoLogQueryUsecase: plu,
@@ -76,12 +78,17 @@ func (h *handler) setupServer() {
 	router.HandlerFunc(http.MethodPost, "/v1/login", h.login)
 
 	router.POST("/v1/photos", h.wrap(secure.ThenFunc(h.storePhoto)))
+	router.HandlerFunc(http.MethodGet, "/v1/photos/:id", h.getPhoto)
+
 	router.HandlerFunc(http.MethodPost, "/v1/trips", h.storeTrip)
 
 	router.POST("/v1/graphql", h.wrap(secure.ThenFunc(h.graphQL)))
 
 	h.server = &http.Server{
-		Handler: h.enableCORS(router),
-		Addr:    ":8080",
+		Handler:      h.enableCORS(router),
+		Addr:         ":8080",
+		IdleTimeout:  time.Minute,
+		ReadTimeout:  10 * time.Second,
+		WriteTimeout: 30 * time.Second,
 	}
 }

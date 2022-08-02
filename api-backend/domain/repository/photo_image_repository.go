@@ -7,4 +7,5 @@ import (
 
 type PhotoImageRepository interface {
 	Store(io.Reader, string) error
+	Get(key string) (io.ReadCloser, error)
 }
