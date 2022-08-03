@@ -22,6 +22,7 @@ module.exports = {
   plugins: ['react', '@typescript-eslint', 'import', 'unused-imports'],
   rules: {
     'unused-imports/no-unused-imports': 'error',
+    'react/prop-types': 'off',
     'import/order': [
       'error',
       {
