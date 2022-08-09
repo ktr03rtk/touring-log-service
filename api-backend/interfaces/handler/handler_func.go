@@ -149,7 +149,7 @@ func (h *handler) graphQLFileds(r *http.Request) graphql.Fields {
 		},
 		"touringLog": &graphql.Field{
 			Type:        touringLogType,
-			Description: "Get log by year and month",
+			Description: "Get log by year and month and day",
 			Args: graphql.FieldConfigArgument{
 				"year": &graphql.ArgumentConfig{
 					Type: graphql.Int,

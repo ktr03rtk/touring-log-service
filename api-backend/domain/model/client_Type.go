@@ -7,16 +7,16 @@ type LogDate struct {
 }
 
 type TouringLog struct {
-	Trip  []*ClientTrip
-	Photo []*ClientPhoto
+	Trip  []*WebClientTrip
+	Photo []*WebClientPhoto
 }
 
-type ClientTrip struct {
+type WebClientTrip struct {
 	Lat float64 `json:"lat"`
 	Lng float64 `json:"lng"`
 }
 
-type ClientPhoto struct {
+type WebClientPhoto struct {
 	Id  string  `json:"id"`
 	Lat float64 `json:"lat"`
 	Lng float64 `json:"lng"`
