@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"context"
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
@@ -182,15 +183,18 @@ func (h *handler) graphQLFileds(r *http.Request) graphql.Fields {
 					return nil, errors.New("failed to specify identity")
 				}
 
-				fmt.Printf("--------------- %+v\n", unit)
-				// TODO: fetch trip
+				tripLog, err := h.tripLogQueryUsecase.Execute(context.Background(), year, month, day, unit)
+				if err != nil {
+					return nil, errors.New("failed to fetch trip log")
+				}
 
 				photoLog, err := h.photoLogQueryUsecase.Execute(year, month, day, id)
 				if err != nil {
-					return nil, errors.New("failed to fetch log")
+					return nil, errors.New("failed to fetch photo log")
 				}
 
 				touringLogs := model.TouringLog{
+					Trip:  tripLog,
 					Photo: photoLog,
 				}
 

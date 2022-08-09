@@ -31,10 +31,11 @@ type handler struct {
 	tripUsecase          usecase.TripStoreUsecase
 	listQueryUsecase     usecase.DateListQueryUsecase
 	photoLogQueryUsecase usecase.PhotoLogQueryUsecase
+	tripLogQueryUsecase  usecase.TripLogQueryUsecase
 	server               *http.Server
 }
 
-func NewHandler(secret string, uu usecase.UserUsecase, psu usecase.PhotoStoreUsecase, pgu usecase.PhotoGetUsecase, tu usecase.TripStoreUsecase, du usecase.DateListQueryUsecase, plu usecase.PhotoLogQueryUsecase) Handler {
+func NewHandler(secret string, uu usecase.UserUsecase, psu usecase.PhotoStoreUsecase, pgu usecase.PhotoGetUsecase, tu usecase.TripStoreUsecase, du usecase.DateListQueryUsecase, plu usecase.PhotoLogQueryUsecase, tlu usecase.TripLogQueryUsecase) Handler {
 	var cfg config
 	cfg.jwt.secret = secret
 
@@ -46,6 +47,7 @@ func NewHandler(secret string, uu usecase.UserUsecase, psu usecase.PhotoStoreUse
 		tripUsecase:          tu,
 		listQueryUsecase:     du,
 		photoLogQueryUsecase: plu,
+		tripLogQueryUsecase:  tlu,
 	}
 
 	h.setupServer()

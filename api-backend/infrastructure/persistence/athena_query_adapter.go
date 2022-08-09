@@ -3,7 +3,6 @@ package persistence
 import (
 	"context"
 	"fmt"
-	"log"
 	"time"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
@@ -16,11 +15,12 @@ import (
 
 type AthenaQueryAdapter struct {
 	database         string
+	table            string
 	s3OutputLocation string
 	*athena.Client
 }
 
-func NewAthenaQueryAdapter(ctx context.Context, region, database, s3OutputLocation string) (repository.AthenaQueryRepository, error) {
+func NewAthenaQueryAdapter(ctx context.Context, region, database, table, s3OutputLocation string) (repository.AthenaQueryRepository, error) {
 	cfg, err := config.LoadDefaultConfig(ctx, config.WithRegion(region))
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to configure aws")
@@ -28,12 +28,14 @@ func NewAthenaQueryAdapter(ctx context.Context, region, database, s3OutputLocati
 
 	return &AthenaQueryAdapter{
 		database,
+		table,
 		s3OutputLocation,
 		athena.NewFromConfig(cfg),
 	}, nil
 }
 
 func (aa *AthenaQueryAdapter) Fetch(ctx context.Context, rawQuery string, args []interface{}) ([][]string, error) {
+	args = append([]interface{}{aa.table}, args...)
 	query := fmt.Sprintf(rawQuery, args...)
 
 	startQueryExecutionInput := &athena.StartQueryExecutionInput{
@@ -58,7 +60,7 @@ func (aa *AthenaQueryAdapter) Fetch(ctx context.Context, rawQuery string, args [
 
 	err = aa.waitGetQueryExecution(ctx, getQueryExecutionInput)
 	if err != nil {
-		log.Fatal(err)
+		return nil, err
 	}
 
 	getQueryResultsInput := &athena.GetQueryResultsInput{
