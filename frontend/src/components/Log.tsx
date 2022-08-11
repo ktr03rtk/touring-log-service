@@ -1,12 +1,12 @@
-import { GoogleMap, LoadScript, Marker, Polyline } from '@react-google-maps/api';
 import { useState, useEffect } from 'react';
 import DatePicker from 'react-datepicker';
 import { useNavigate } from 'react-router-dom';
 
 import Alert from './Alert';
-import Modal from './Modal';
+import Map from './Map';
 
 import type { AlertType } from '../types/Alert';
+import type { TripTypes, PhotoTypes, TouringLogTypes } from '../types/Touring';
 
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -15,66 +15,17 @@ type LogProperties = {
   jwt: string;
 };
 
-type TripTypes = {
-  lat: number;
-  lng: number;
-};
-
-type PhotoTypes = {
-  id: string;
-  lat: number;
-  lng: number;
-};
-
 const Log = ({ jwt }: LogProperties) => {
+  const TokyoStation = { lat: 35.6809155, lng: 139.76606 };
   const navigate = useNavigate();
-  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [year, setYear] = useState(new Date().getFullYear());
   const [month, setMonth] = useState(new Date().getMonth());
   const [includeDate, setIncludeDate] = useState<Date[]>([]);
   const [photoMarker, setPhotoMarker] = useState<PhotoTypes[]>([]);
   const [startDate, setStartDate] = useState(new Date());
   const [alert, setAlert] = useState<AlertType>({ type: 'd-none', message: '' });
-  const [image, setImage] = useState('');
-  const [show, setShow] = useState(false);
-
-  const CustomMarker = (props: any) => {
-    const { id } = props;
-
-    const onMarkerClick = () => {
-      setShow(true);
-      setIsLoading(true);
-      const myHeaders = new Headers();
-      myHeaders.append('Content-Type', 'application/json');
-      myHeaders.append('Authorization', 'Bearer ' + jwt);
-
-      const requestOptions = {
-        method: 'GET',
-        headers: myHeaders,
-      };
-
-      fetch(`${process.env.REACT_APP_API_URL}/v1/photos/` + id, requestOptions)
-        .then((res) => res.json())
-        .then((data) => {
-          if (data.error) {
-            setAlert({ type: 'alert-danger', message: data.error.message });
-            setIsLoading(false);
-            return;
-          }
-          const img = Object.values(data.response.message);
-          return img;
-        })
-        .then((img) => {
-          setImage('data:image/png;base64, ' + (img as string[]).join(''));
-          setIsLoading(false);
-        })
-        .catch((err) => {
-          setIsLoading(false);
-          console.log(err);
-        });
-    };
-    return <Marker onClick={onMarkerClick} {...props} />;
-  };
+  const [center, setCenter] = useState<TripTypes>(TokyoStation);
+  const [paths, setPaths] = useState<TripTypes[][]>([]);
 
   useEffect(() => {
     const payload = `
@@ -113,8 +64,16 @@ const Log = ({ jwt }: LogProperties) => {
     const payload = `
   {
     touringLog(year: ${year}, month: ${month + 1}, day: ${startDate.getDate()}) {
+      trip {
+        lat
+        lng
+      }
       photo {
         id
+        lat
+        lng
+      }
+      center {
         lat
         lng
       }
@@ -139,8 +98,13 @@ const Log = ({ jwt }: LogProperties) => {
           setAlert({ type: 'alert-danger', message: data.error.message });
           return;
         }
-        const photo = Object.values(data.data.touringLog.photo);
-        setPhotoMarker(photo as PhotoTypes[]);
+        const log = Object.values(data.data)[0] as TouringLogTypes;
+        setPhotoMarker(log.photo);
+        setPaths([log.trip]);
+
+        if (log.center !== null) {
+          setCenter(log.center);
+        }
         return;
       })
       .catch((err) => {
@@ -150,47 +114,6 @@ const Log = ({ jwt }: LogProperties) => {
 
   const handleChange = (e: any) => {
     setStartDate(e);
-  };
-
-  const containerStyle = {
-    width: '100%',
-    height: '100vh',
-  };
-
-  const center = {
-    lat: 35.69575,
-    lng: 139.77521,
-  };
-
-  const onLoad = (polyline: any) => {
-    console.log('polyline: ', polyline);
-  };
-
-  const path = [
-    { lat: 37.772, lng: -122.214 },
-    { lat: 21.291, lng: -157.821 },
-    { lat: -18.142, lng: 178.431 },
-    { lat: -27.467, lng: 153.027 },
-  ];
-
-  const options = {
-    strokeColor: '#FF0000',
-    strokeOpacity: 0.8,
-    strokeWeight: 2,
-    fillColor: '#FF0000',
-    fillOpacity: 0.35,
-    clickable: false,
-    draggable: false,
-    editable: false,
-    visible: true,
-    radius: 30000,
-    paths: [
-      { lat: 37.772, lng: -122.214 },
-      { lat: 21.291, lng: -157.821 },
-      { lat: -18.142, lng: 178.431 },
-      { lat: -27.467, lng: 153.027 },
-    ],
-    zIndex: 1,
   };
 
   useEffect(() => {
@@ -217,33 +140,7 @@ const Log = ({ jwt }: LogProperties) => {
           includeDates={includeDate}
         />
       </div>
-      <div className='card'>
-        <LoadScript googleMapsApiKey={process.env.REACT_APP_MAP_API_KEY ?? ''}>
-          <GoogleMap mapContainerStyle={containerStyle} center={center} zoom={16}>
-            {photoMarker.map((m) => {
-              return <CustomMarker key={m.id} id={m.id} position={m} />;
-            })}
-            <Polyline onLoad={onLoad} path={path} options={options} />
-          </GoogleMap>
-        </LoadScript>
-      </div>
-      <Modal
-        show={show}
-        title='Photo'
-        body={<>{isLoading ? <p>Downloading...</p> : <img src={image} width='80%' height='80%' />}</>}
-        footer={
-          <button
-            onClick={() => {
-              setShow(false);
-            }}
-          >
-            Close
-          </button>
-        }
-        onHide={() => {
-          setShow(false);
-        }}
-      />
+      <Map jwt={jwt} photoMarker={photoMarker} setAlert={setAlert} center={center} paths={paths} />
     </div>
   );
 };
