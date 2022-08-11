@@ -7,8 +7,9 @@ type LogDate struct {
 }
 
 type TouringLog struct {
-	Trip  []*WebClientTrip
-	Photo []*WebClientPhoto
+	Trip   []*WebClientTrip
+	Photo  []*WebClientPhoto
+	Center *WebClientTrip
 }
 
 type WebClientTrip struct {

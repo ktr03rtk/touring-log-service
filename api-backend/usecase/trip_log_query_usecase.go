@@ -10,7 +10,7 @@ import (
 )
 
 type TripLogQueryUsecase interface {
-	Execute(ctx context.Context, year, month, day int, unit string) ([]*model.WebClientTrip, error)
+	Execute(ctx context.Context, year, month, day int, unit string) ([]*model.WebClientTrip, *model.WebClientTrip, error)
 }
 
 type tripLogQueryUsecase struct {
@@ -23,7 +23,12 @@ func NewTripLogQueryUsecase(aa repository.AthenaQueryRepository) TripLogQueryUse
 	}
 }
 
-func (tu *tripLogQueryUsecase) Execute(ctx context.Context, year, month, day int, unit string) ([]*model.WebClientTrip, error) {
+type latLngRange struct {
+	min float64
+	max float64
+}
+
+func (tu *tripLogQueryUsecase) Execute(ctx context.Context, year, month, day int, unit string) ([]*model.WebClientTrip, *model.WebClientTrip, error) {
 	// GPS lat, lon is stored, when mode is 2 or 3.
 	// TODO: fetch data with unit key
 	query := "SELECT lat, lon FROM %s where year='%02d' and month='%02d' and day='%02d' and (mode=2 or mode=3);"
@@ -34,20 +39,22 @@ func (tu *tripLogQueryUsecase) Execute(ctx context.Context, year, month, day int
 
 	res, err := tu.athenaQueryAdapter.Fetch(ctx, query, args)
 	if err != nil {
-		return nil, errors.Wrapf(err, "failed to execute trip log query usecase")
+		return nil, nil, errors.Wrapf(err, "failed to execute trip log query usecase")
 	}
 
-	result := make([]*model.WebClientTrip, 0, len(res))
+	trip := make([]*model.WebClientTrip, 0, len(res))
+	latRange := &latLngRange{min: 180, max: 0}
+	lngRange := &latLngRange{min: 180, max: 0}
 
 	for _, val := range res {
 		lat, err := strconv.ParseFloat(val[0], 64)
 		if err != nil {
-			return nil, errors.Wrapf(err, "failed to parse lat")
+			return nil, nil, errors.Wrapf(err, "failed to parse lat")
 		}
 
 		lng, err := strconv.ParseFloat(val[1], 64)
 		if err != nil {
-			return nil, errors.Wrapf(err, "failed to parse lng")
+			return nil, nil, errors.Wrapf(err, "failed to parse lng")
 		}
 
 		array := &model.WebClientTrip{
@@ -55,8 +62,24 @@ func (tu *tripLogQueryUsecase) Execute(ctx context.Context, year, month, day int
 			Lng: lng,
 		}
 
-		result = append(result, array)
+		if lat < latRange.min {
+			latRange.min = lat
+		} else if lat > latRange.max {
+			latRange.max = lat
+		}
+
+		if lng < lngRange.min {
+			lngRange.min = lng
+		} else if lng > lngRange.max {
+			lngRange.max = lng
+		}
+
+		trip = append(trip, array)
 	}
 
-	return result, nil
+	center := &model.WebClientTrip{}
+	center.Lat = (latRange.min + latRange.max) / 2
+	center.Lng = (lngRange.min + lngRange.max) / 2
+
+	return trip, center, nil
 }

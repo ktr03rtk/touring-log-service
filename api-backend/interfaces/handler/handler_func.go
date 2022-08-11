@@ -183,7 +183,7 @@ func (h *handler) graphQLFileds(r *http.Request) graphql.Fields {
 					return nil, errors.New("failed to specify identity")
 				}
 
-				tripLog, err := h.tripLogQueryUsecase.Execute(context.Background(), year, month, day, unit)
+				tripLog, center, err := h.tripLogQueryUsecase.Execute(context.Background(), year, month, day, unit)
 				if err != nil {
 					return nil, errors.New("failed to fetch trip log")
 				}
@@ -194,8 +194,9 @@ func (h *handler) graphQLFileds(r *http.Request) graphql.Fields {
 				}
 
 				touringLogs := model.TouringLog{
-					Trip:  tripLog,
-					Photo: photoLog,
+					Trip:   tripLog,
+					Photo:  photoLog,
+					Center: center,
 				}
 
 				return touringLogs, nil
@@ -230,6 +231,9 @@ var touringLogType = graphql.NewObject(
 			},
 			"photo": &graphql.Field{
 				Type: graphql.NewList(photoLogType),
+			},
+			"center": &graphql.Field{
+				Type: tripLogType,
 			},
 		},
 	},
