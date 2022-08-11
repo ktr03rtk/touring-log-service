@@ -42,6 +42,10 @@ func (tu *tripLogQueryUsecase) Execute(ctx context.Context, year, month, day int
 		return nil, nil, errors.Wrapf(err, "failed to execute trip log query usecase")
 	}
 
+	if len(res) == 0 {
+		return nil, nil, nil
+	}
+
 	trip := make([]*model.WebClientTrip, 0, len(res))
 	latRange := &latLngRange{min: 180, max: 0}
 	lngRange := &latLngRange{min: 180, max: 0}
