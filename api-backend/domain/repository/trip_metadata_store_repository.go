@@ -1,4 +1,4 @@
-//go:generate mockgen -source=trip_metadata_repository.go -destination=../../mock/mock_trip_metadata_repository.go -package=mock
+//go:generate mockgen -source=trip_metadata_store_repository.go -destination=../../mock/mock_trip_metadata_store_repository.go -package=mock
 package repository
 
 import "github.com/ktr03rtk/touring-log-service/api-backend/domain/model"
