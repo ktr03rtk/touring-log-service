@@ -1,12 +1,15 @@
 package handler
 
 import (
+	"context"
+	"encoding/base64"
 	"encoding/json"
 	"fmt"
 	"io"
 	"net/http"
 
 	"github.com/graphql-go/graphql"
+	"github.com/julienschmidt/httprouter"
 	"github.com/ktr03rtk/touring-log-service/api-backend/domain/model"
 	"github.com/pkg/errors"
 )
@@ -31,7 +34,7 @@ func (h *handler) storePhoto(w http.ResponseWriter, r *http.Request) {
 
 	files := r.MultipartForm.File["images"]
 	for _, file := range files {
-		if err := h.photoUsecase.Execute(file, id, unit); err != nil {
+		if err := h.photoStoreUsecase.Execute(file, id, unit); err != nil {
 			h.errJSON(w, err)
 
 			return
@@ -40,6 +43,32 @@ func (h *handler) storePhoto(w http.ResponseWriter, r *http.Request) {
 
 	res := jsonResp{
 		OK: true,
+	}
+
+	if err := h.writeJSON(w, http.StatusOK, res, "response"); err != nil {
+		h.errJSON(w, err)
+		return
+	}
+}
+
+func (h *handler) getPhoto(w http.ResponseWriter, r *http.Request) {
+	params := httprouter.ParamsFromContext(r.Context())
+
+	reader, err := h.photoGetUsecase.Execute(params.ByName("id"))
+	if err != nil {
+		h.errJSON(w, err)
+		return
+	}
+
+	buf, err := io.ReadAll(reader)
+	if err != nil {
+		h.errJSON(w, err)
+		return
+	}
+
+	res := jsonResp{
+		OK:      true,
+		Message: base64.StdEncoding.EncodeToString(buf),
 	}
 
 	if err := h.writeJSON(w, http.StatusOK, res, "response"); err != nil {
@@ -121,7 +150,7 @@ func (h *handler) graphQLFileds(r *http.Request) graphql.Fields {
 		},
 		"touringLog": &graphql.Field{
 			Type:        touringLogType,
-			Description: "Get log by year and month",
+			Description: "Get log by year and month and day",
 			Args: graphql.FieldConfigArgument{
 				"year": &graphql.ArgumentConfig{
 					Type: graphql.Int,
@@ -154,16 +183,20 @@ func (h *handler) graphQLFileds(r *http.Request) graphql.Fields {
 					return nil, errors.New("failed to specify identity")
 				}
 
-				fmt.Printf("--------------- %+v\n", unit)
-				// TODO: fetch trip
+				tripLog, center, err := h.tripLogQueryUsecase.Execute(context.Background(), year, month, day, unit)
+				if err != nil {
+					return nil, errors.New("failed to fetch trip log")
+				}
 
 				photoLog, err := h.photoLogQueryUsecase.Execute(year, month, day, id)
 				if err != nil {
-					return nil, errors.New("failed to fetch log")
+					return nil, errors.New("failed to fetch photo log")
 				}
 
 				touringLogs := model.TouringLog{
-					Photo: photoLog,
+					Trip:   tripLog,
+					Photo:  photoLog,
+					Center: center,
 				}
 
 				return touringLogs, nil
@@ -198,6 +231,9 @@ var touringLogType = graphql.NewObject(
 			},
 			"photo": &graphql.Field{
 				Type: graphql.NewList(photoLogType),
+			},
+			"center": &graphql.Field{
+				Type: tripLogType,
 			},
 		},
 	},

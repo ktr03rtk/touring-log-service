@@ -61,7 +61,7 @@ const Login = ({ handleJWTChange }: LoginProperties) => {
         } else {
           handleJWTChange(Object.values(data)[0] as string);
           window.localStorage.setItem('jwt', JSON.stringify(Object.values(data)[0]));
-          navigate('/upload');
+          navigate('/log');
         }
       });
   };

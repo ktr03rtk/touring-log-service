@@ -54,3 +54,22 @@ func (pp *photoImagePersistence) Store(reader io.Reader, key string) error {
 
 	return nil
 }
+
+func (pp *photoImagePersistence) Get(key string) (io.ReadCloser, error) {
+	input := &s3.GetObjectInput{
+		Bucket: aws.String(pp.bucket),
+		Key:    aws.String(key),
+	}
+
+	r, err := pp.GetObject(context.Background(), input)
+	if err != nil {
+		return nil, errors.Wrapf(err, "failed to get object")
+	}
+
+	zr, err := gzip.NewReader(r.Body)
+	if err != nil {
+		return nil, errors.Wrapf(err, "failed to get gzip read")
+	}
+
+	return zr, nil
+}

@@ -16,9 +16,12 @@ import (
 )
 
 var (
-	region    string
-	bucket    string
-	jwtSecret string
+	region           string
+	bucket           string
+	jwtSecret        string
+	database         string
+	table            string
+	s3OutputLocation string
 )
 
 func init() {
@@ -49,6 +52,27 @@ func getEnv() error {
 
 	jwtSecret = j
 
+	d, ok := os.LookupEnv("DATABASE")
+	if !ok {
+		return errors.New("env DATABASE is not found")
+	}
+
+	database = d
+
+	t, ok := os.LookupEnv("TABLE")
+	if !ok {
+		return errors.New("env TABLE is not found")
+	}
+
+	table = t
+
+	s, ok := os.LookupEnv("S3_OUTPUT_LOCATION")
+	if !ok {
+		return errors.New("env S3_OUTPUT_LOCATION is not found")
+	}
+
+	s3OutputLocation = s
+
 	return nil
 }
 
@@ -61,6 +85,10 @@ func main() {
 	photoMetadataRepository := persistence.NewPhotoMetadataPersistence(conn)
 	tripMetadataRepository := persistence.NewTripMetadataPersistence(conn)
 	queryAdapterRepository := persistence.NewQueryAdapter(conn)
+	athenaQueryAdapterRepository, err := persistence.NewAthenaQueryAdapter(ctx, region, database, table, s3OutputLocation)
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	photoImageRepository, err := persistence.NewPhotoImagePersistence(ctx, region, bucket)
 	if err != nil {
@@ -70,12 +98,14 @@ func main() {
 	userService := service.NewUserService(userRepository)
 	tripService := service.NewTripService(tripMetadataRepository)
 	userUsecase := usecase.NewUserUsecase(userRepository, userService)
-	photoUsecase := usecase.NewPhotoStoreUsecase(photoMetadataRepository, photoImageRepository)
+	photoStoreUsecase := usecase.NewPhotoStoreUsecase(photoMetadataRepository, photoImageRepository)
+	photoGetUsecase := usecase.NewPhotoGetUsecase(queryAdapterRepository, photoImageRepository)
 	tripUsecase := usecase.NewTripStoreUsecase(tripMetadataRepository, tripService)
 	listQueryUsecase := usecase.NewDateListQueryUsecase(queryAdapterRepository)
 	photoLogQueryUsecase := usecase.NewPhotoLogQueryUsecase(queryAdapterRepository)
+	tripLogQueryUsecase := usecase.NewTripLogQueryUsecase(athenaQueryAdapterRepository)
 
-	h := handler.NewHandler(jwtSecret, userUsecase, photoUsecase, tripUsecase, listQueryUsecase, photoLogQueryUsecase)
+	h := handler.NewHandler(jwtSecret, userUsecase, photoStoreUsecase, photoGetUsecase, tripUsecase, listQueryUsecase, photoLogQueryUsecase, tripLogQueryUsecase)
 
 	go func() {
 		h.Start()
