@@ -45,6 +45,8 @@ func (h *handler) writeJSON(w http.ResponseWriter, status int, data interface{},
 }
 
 func (h *handler) errJSON(w http.ResponseWriter, err error, status ...int) {
+	h.logger.Println(err)
+
 	statusCode := http.StatusBadRequest
 	if len(status) > 0 {
 		statusCode = status[0]
