@@ -34,6 +34,21 @@ func (m *MockPhotoImageRepository) EXPECT() *MockPhotoImageRepositoryMockRecorde
 	return m.recorder
 }
 
+// Get mocks base method.
+func (m *MockPhotoImageRepository) Get(key string) (io.ReadCloser, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Get", key)
+	ret0, _ := ret[0].(io.ReadCloser)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Get indicates an expected call of Get.
+func (mr *MockPhotoImageRepositoryMockRecorder) Get(key interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Get", reflect.TypeOf((*MockPhotoImageRepository)(nil).Get), key)
+}
+
 // Store mocks base method.
 func (m *MockPhotoImageRepository) Store(arg0 io.Reader, arg1 string) error {
 	m.ctrl.T.Helper()
