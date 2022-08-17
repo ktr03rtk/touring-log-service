@@ -105,7 +105,9 @@ func main() {
 	photoLogQueryUsecase := usecase.NewPhotoLogQueryUsecase(queryAdapterRepository)
 	tripLogQueryUsecase := usecase.NewTripLogQueryUsecase(athenaQueryAdapterRepository)
 
-	h := handler.NewHandler(jwtSecret, userUsecase, photoStoreUsecase, photoGetUsecase, tripUsecase, listQueryUsecase, photoLogQueryUsecase, tripLogQueryUsecase)
+	logger := log.New(os.Stdout, "", log.Ldate|log.Ltime)
+
+	h := handler.NewHandler(jwtSecret, userUsecase, photoStoreUsecase, photoGetUsecase, tripUsecase, listQueryUsecase, photoLogQueryUsecase, tripLogQueryUsecase, logger)
 
 	go func() {
 		h.Start()
@@ -114,7 +116,7 @@ func main() {
 	quit := make(chan os.Signal, 1)
 	signal.Notify(quit, syscall.SIGTERM)
 	<-quit
-	log.Println("Caught SIGTERM, shutting down")
+	logger.Println("Caught SIGTERM, shutting down")
 
 	h.Stop(ctx)
 }

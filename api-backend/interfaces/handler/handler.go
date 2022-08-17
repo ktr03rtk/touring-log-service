@@ -32,10 +32,11 @@ type handler struct {
 	listQueryUsecase     usecase.DateListQueryUsecase
 	photoLogQueryUsecase usecase.PhotoLogQueryUsecase
 	tripLogQueryUsecase  usecase.TripLogQueryUsecase
+	logger               *log.Logger
 	server               *http.Server
 }
 
-func NewHandler(secret string, uu usecase.UserUsecase, psu usecase.PhotoStoreUsecase, pgu usecase.PhotoGetUsecase, tu usecase.TripStoreUsecase, du usecase.DateListQueryUsecase, plu usecase.PhotoLogQueryUsecase, tlu usecase.TripLogQueryUsecase) Handler {
+func NewHandler(secret string, uu usecase.UserUsecase, psu usecase.PhotoStoreUsecase, pgu usecase.PhotoGetUsecase, tu usecase.TripStoreUsecase, du usecase.DateListQueryUsecase, plu usecase.PhotoLogQueryUsecase, tlu usecase.TripLogQueryUsecase, logger *log.Logger) Handler {
 	var cfg config
 	cfg.jwt.secret = secret
 
@@ -48,6 +49,7 @@ func NewHandler(secret string, uu usecase.UserUsecase, psu usecase.PhotoStoreUse
 		listQueryUsecase:     du,
 		photoLogQueryUsecase: plu,
 		tripLogQueryUsecase:  tlu,
+		logger:               logger,
 	}
 
 	h.setupServer()
@@ -57,7 +59,7 @@ func NewHandler(secret string, uu usecase.UserUsecase, psu usecase.PhotoStoreUse
 
 func (h *handler) Start() {
 	if err := h.server.ListenAndServe(); err != nil {
-		log.Fatalln("Server closed with error:", err)
+		h.logger.Fatalln("Server closed with error:", err)
 	}
 }
 
@@ -66,10 +68,10 @@ func (h *handler) Stop(ctxParent context.Context) {
 	defer cancel()
 
 	if err := h.server.Shutdown(ctx); err != nil {
-		log.Println("Failed to gracefully shutdown:", err)
+		h.logger.Println("Failed to gracefully shutdown:", err)
 	}
 
-	log.Println("Server shutdown")
+	h.logger.Println("Server shutdown")
 }
 
 func (h *handler) setupServer() {
