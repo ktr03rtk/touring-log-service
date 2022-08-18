@@ -2,6 +2,7 @@ package handler
 
 import (
 	"context"
+	"log"
 
 	"github.com/ktr03rtk/touring-log-service/data-store/domain/model"
 	"github.com/ktr03rtk/touring-log-service/data-store/usecase"
@@ -19,16 +20,18 @@ type PayloadHandler interface {
 type payloadHandler struct {
 	payloadSubscribeUsecase usecase.PayloadSubscribeUsecase
 	payloadStoreUsecase     usecase.PayloadStoreUsecase
+	logger                  *log.Logger
 	payloadCh               chan *model.Payload
 }
 
-func NewPayloadHandler(sbu usecase.PayloadSubscribeUsecase, stu usecase.PayloadStoreUsecase) PayloadHandler {
+func NewPayloadHandler(sbu usecase.PayloadSubscribeUsecase, stu usecase.PayloadStoreUsecase, logger *log.Logger) PayloadHandler {
 	ch := make(chan *model.Payload, concurrency)
 
 	return &payloadHandler{
 		payloadSubscribeUsecase: sbu,
 		payloadStoreUsecase:     stu,
 		payloadCh:               ch,
+		logger:                  logger,
 	}
 }
 

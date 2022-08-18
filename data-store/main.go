@@ -52,17 +52,19 @@ func getEnv() error {
 }
 
 func main() {
+	logger := log.New(os.Stdout, "", log.Ldate|log.Ltime)
+
 	ctx, stop := signal.NotifyContext(context.Background(), syscall.SIGTERM, syscall.SIGINT)
 	defer stop()
 
 	sbr, err := adapter.NewMqttAdapter(ctx)
 	if err != nil {
-		log.Fatal(err)
+		logger.Fatal(err)
 	}
 
 	str, err := persistence.NewS3Persistence(ctx, region, bucket)
 	if err != nil {
-		log.Fatal(err)
+		logger.Fatal(err)
 	}
 
 	tms := adapter.NewHTTPAdapter(endpoint)
@@ -70,9 +72,9 @@ func main() {
 	sbu := usecase.NewPayloadSubscribeUsecase(sbr)
 	stu := usecase.NewPayloadStoreUsecase(str, tms)
 
-	h := handler.NewPayloadHandler(sbu, stu)
+	h := handler.NewPayloadHandler(sbu, stu, logger)
 
 	if err := h.Handle(ctx); err != nil {
-		log.Fatal(err)
+		logger.Fatal(err)
 	}
 }
