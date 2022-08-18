@@ -3,6 +3,8 @@ package handler
 import (
 	"context"
 	"errors"
+	"log"
+	"os"
 	"testing"
 	"time"
 
@@ -67,8 +69,9 @@ func TestPayloadHandler(t *testing.T) {
 			tms := mock.NewMockTripMetadataRepository(ctrl)
 			sbu := usecase.NewPayloadSubscribeUsecase(sbr)
 			stu := usecase.NewPayloadStoreUsecase(str, tms)
+			logger := log.New(os.Stdout, "", log.Ldate|log.Ltime)
 
-			ph := NewPayloadHandler(sbu, stu)
+			ph := NewPayloadHandler(sbu, stu, logger)
 
 			ctx, cancel := context.WithCancel(context.Background())
 			eg, ctx := errgroup.WithContext(ctx)
