@@ -64,7 +64,7 @@ spec:
         app: data-store
     spec:
       containers:
-        - image: ghcr.io/ktr03rtk/touring-log-service/data-store:v0.0.8
+        - image: ghcr.io/ktr03rtk/touring-log-service/data-store:v0.0.9
           name: data-store
           volumeMounts:
             - mountPath: /etc/data_store/cert
