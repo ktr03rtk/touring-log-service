@@ -19,6 +19,7 @@ echo -n 'foobar' > access_key_id.txt
 echo -n 'barbaz' > secret_access_key.txt
 echo -n 'foobaz' > bucket.txt
 echo -n 'foobarbaz' > jwt_secret.txt
+echo -n 'foobarbazfoo' > s3_output_location.txt
 ```
 
 Install kubeseal cli and create controller resource. [github](https://github.com/bitnami-labs/sealed-secrets)
@@ -38,10 +39,11 @@ kubectl create secret -n api generic api-secrets \
   --from-file=secret_access_key=./secret_access_key.txt \
   --from-file=bucket=./bucket.txt \
   --from-file=jwt_secret=./jwt_secret.txt \
+  --from-file=s3_output_location=./s3_output_location.txt \
   -o yaml --dry-run=client >secret2.yml
 kubeseal -o yaml <secret2.yml >sealedsecret2.yml
 rm secret1.yml secret2.yml mysql_root_password.txt mysql_user.txt mysql_password.txt \
-  access_key_id.txt secret_access_key.txt bucket.txt jwt_secret.txt
+  access_key_id.txt secret_access_key.txt bucket.txt jwt_secret.txt s3_output_location.txt
 ```
 
 ## Copy sealed secret manifest to api-backend manifest
