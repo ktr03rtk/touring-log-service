@@ -10,6 +10,8 @@ on:
     secrets:
       REACT_APP_API_URL:
         required: true
+      REACT_APP_MAP_API_KEY:
+        required: true
       AWS_ROLE_ARN:
         required: true
       S3_BUCKET:
@@ -25,6 +27,7 @@ jobs:
     env:
       TZ: Asia/Tokyo
       REACT_APP_API_URL: ${{ secrets.REACT_APP_API_URL }}
+      REACT_APP_MAP_API_KEY: ${{ secrets.REACT_APP_MAP_API_KEY }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
