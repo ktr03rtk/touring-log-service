@@ -61,7 +61,7 @@ spec:
                       name: vpn-client-credential
                       key: endpoint
           containers:
-            - image: ghcr.io/ktr03rtk/touring-log-service/vpn-client:v0.0.10
+            - image: ghcr.io/ktr03rtk/touring-log-service/vpn-client:v0.0.11
               name: vpn-client
               command: ["client"]
               ports:
