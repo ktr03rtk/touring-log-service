@@ -31,7 +31,7 @@ type latLngRange struct {
 func (tu *tripLogQueryUsecase) Execute(ctx context.Context, year, month, day int, unit string) ([]*model.WebClientTrip, *model.WebClientTrip, error) {
 	// GPS lat, lon is stored, when mode is 2 or 3.
 	// TODO: fetch data with unit key
-	query := "SELECT lat, lon FROM %s where year='%02d' and month='%02d' and day='%02d' and (mode=2 or mode=3);"
+	query := "SELECT lat, lon FROM %s where year='%02d' and month='%02d' and day='%02d' and (mode=2 or mode=3) order by timestamp;"
 
 	args := []interface{}{
 		year, month, day,
